@@ -1,7 +1,23 @@
 {
-  "files": [],
-  "references": [
-    { "path": "./tsconfig.app.json" },
-    { "path": "./tsconfig.node.json" }
-  ]
+  "extends": "@vue/tsconfig/tsconfig.web.json",
+  "include": [
+      "src/**/*",
+      "vite.config.*",
+      ".eslintrc.js",
+      "tailwind.config.js",
+      "postcss.config.js"
+  ],
+  "compilerOptions": {
+      "baseUrl": ".",
+      "paths": {
+          "@/*": ["./src/*"]
+      },
+
+      // Node.js
+      // "module": "node16",
+      "moduleResolution": "node",
+
+      // JavaScript disablement
+      "allowJs": false
+  }
 }

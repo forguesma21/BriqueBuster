@@ -1,0 +1,20 @@
+# requirements.txt pour le projet Chez Trempanillo
+
+Flask==3.0.0
+Flask-Cors==4.0.0
+Flask-SQLAlchemy==3.1.1
+Werkzeug==3.0.1
+pymysql==1.1.0
+
+# Pour garantir la compatibilité avec SQLAlchemy
+SQLAlchemy==2.0.27
+
+# Pour le hashage des mots de passe
+bcrypt==4.0.1
+
+# Développement et tests
+pytest==7.4.3
+
+# Instructions pour installer ces dépendances
+# Créez un environnement virtuel et exécutez la commande suivante :
+# pip install -r requirements.txt
