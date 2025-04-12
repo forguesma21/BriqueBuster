@@ -15,7 +15,7 @@ import os
 load_dotenv()
 
 app = Flask(__name__)
-CORS(app, origins=["http://localhost:5173"])
+CORS(app)
 migrate = Migrate(app, db)
 
 app.config.from_object('config.Config')

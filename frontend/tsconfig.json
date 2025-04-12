@@ -10,14 +10,17 @@
   "compilerOptions": {
       "baseUrl": ".",
       "paths": {
-          "@/*": ["./src/*"]
+          "@/*": ["src/*"]
       },
+    "jsx": "preserve",
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "moduleResolution": "node",
+    "allowJs": false
+  },
+    "include": ["src"]
 
-      // Node.js
-      // "module": "node16",
-      "moduleResolution": "node",
-
-      // JavaScript disablement
-      "allowJs": false
-  }
 }

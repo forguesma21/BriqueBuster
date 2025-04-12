@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="app">
     <NavBar />
     <router-view />
     <PiedPage />
@@ -9,7 +9,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import NavBar from "./components/NavBar.vue";
+import NavBar from '@/components/NavBar.vue';
 import PiedPage from "./components/common/PiedPage.vue";
 
 export default defineComponent({
@@ -20,3 +20,4 @@ export default defineComponent({
     },
 });
 </script>
+

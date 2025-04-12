@@ -1,5 +1,4 @@
 import uuid
-from email.policy import default
 
 from database.db import db
 

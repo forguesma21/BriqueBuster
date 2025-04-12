@@ -1,5 +1,5 @@
 <template>  
-  <section class="relative w-full h-[500px] bg-no-repeat bg-cover bg-bottom" style="background-image: url('./public/hero_bg.svg');">
+  <section class="relative w-full h-[500px] bg-no-repeat bg-cover bg-bottom" style="background-image: url('/hero_bg.svg');">
     <div class="absolute inset-0 flex items-center justify-center">
       <div class="text-center ml-8">
           <div class="font-bold text-6xl w-[30] centered text-BbDarkBlue">Votre destination VHS!</div>
@@ -25,17 +25,12 @@
     />
   </section>
 
-  
-
 </template>
 
 <script lang="ts">
 import { defineComponent, onMounted, ref } from "vue";
-import { CouleurBouton } from "@/scripts/SpecialEnum";
-import type * as specialType from "@/SpecialType.js";
 import CardProduct from '@/components/common/CardProduct.vue';
 import { recuperer_produits } from '../api/produits.js';
-
 
 
 
@@ -50,6 +45,7 @@ export default defineComponent({
     const chargerProduits = async () => {
       try {
         const data = await recuperer_produits();
+        console.log('Produits chargés:', data);
         produits.value = data;
       } catch (error) {
         console.error('Erreur lors du chargement des produits :', error);

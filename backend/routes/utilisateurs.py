@@ -13,16 +13,13 @@ utilisateurs_bp = Blueprint('utilisateurs', __name__)
 
 @utilisateurs_bp.route('/connexion', methods=['POST'])
 def connexion():
-    data = request.get_json()  # Récupère le body de la requête JSON
+    data = request.get_json()
 
-    # Recherche l'utilisateur dans la base de données en fonction du courriel
     utilisateur = Utilisateurs.query.filter_by(courriel=data['courriel']).first()
 
     if utilisateur and check_password_hash(utilisateur.mot_de_passe, data['motDePasse']):
-        # Si le mot de passe est correct, retourner l'id de l'utilisateur
         return jsonify({"utilisateurID": utilisateur.id}), 200
     else:
-        # Sinon, retourner une erreur
         return jsonify({"message": "Mauvais mot de passe ou courriel."}), 400
 
 

@@ -7,7 +7,7 @@
       <form @submit.prevent="submitForm" class="space-y-6">
          <div>
           <label for="firstname" class="block text-sm mb-2 text-gray-700">PRÉNOM</label>
-          <input v-model="firstname" required :type="firstname" :id="firstname" placeholder="VOTRE PRÉNOM"
+          <input v-model="firstname" required :type="text" :id="firstname" placeholder="VOTRE PRÉNOM"
             class="placeholder:text-sm w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
         </div>
 
