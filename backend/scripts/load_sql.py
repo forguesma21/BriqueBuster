@@ -1,4 +1,9 @@
 import os
+import sys
+
+# Ajouter le répertoire parent au chemin Python
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 from database.db import db
 from flask import Flask
 
@@ -22,7 +27,7 @@ def execute_sql_file(file_path):
 
 if __name__ == "__main__":
     app = Flask(__name__)
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:password@localhost/nom_de_ta_base'
+    app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+pymysql://root:root@localhost/brique_buster'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     db.init_app(app)
 

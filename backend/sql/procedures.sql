@@ -1,6 +1,6 @@
 -- backend/scripts/procedures.sql
 
-DELIMITER //
+# DELIMITER //
 
 CREATE PROCEDURE AjoutPanier(
     IN userID VARCHAR(36),
@@ -40,11 +40,9 @@ BEGIN
 
 END;
 
-//
-
-DELIMITER ;
-
-DELIMITER //
+# DELIMITER ;
+#
+# DELIMITER //
 
 CREATE PROCEDURE ObtenirPanier(IN userID VARCHAR(36))
 BEGIN
@@ -71,7 +69,7 @@ BEGIN
     WHERE pi.panier_id = panierID;
 
 END;
-
-//
-
-DELIMITER ;
+#
+# //
+#
+# DELIMITER ;
