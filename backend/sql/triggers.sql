@@ -5,7 +5,7 @@ USE brique_buster;
 DROP TRIGGER IF EXISTS create_fidelite;
 DROP TRIGGER IF EXISTS update_fidelite;
 
-# DELIMITER //
+DELIMITER //
 
 -- Trigger pour créer une entrée dans la table fidelite lorsque un utilisateur est créé
 CREATE TRIGGER create_fidelite
@@ -18,9 +18,9 @@ BEGIN
     INSERT INTO fidelite (id, user_id, points, categorie_id)
     VALUES (fidelite_id, NEW.id, 0, 0);
 END;
-# //
+//
 
-# DELIMITER //
+DELIMITER //
 
 -- Trigger pour créer une entrée dans la table pniers lorsque un utilisateur est créé
 CREATE TRIGGER create_panier
@@ -33,9 +33,9 @@ BEGIN
     INSERT INTO paniers (id, user_id)
     VALUES (panier_id, NEW.id);
 END;
-# //
+//
 
-# DELIMITER //
+DELIMITER //
 
 -- Trigger pour mettre à jour les points de fidélité après une réservation
 CREATE TRIGGER update_fidelite
@@ -65,6 +65,6 @@ BEGIN
     SET categorie_id = nouvelle_categorie_id
     WHERE user_id = NEW.user_id;
 END;
-# //
+//
 
-# DELIMITER ;
+DELIMITER ;

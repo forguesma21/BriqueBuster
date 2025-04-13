@@ -15,7 +15,6 @@ from routes.utilisateurs import utilisateurs_bp
 from routes.produits import produits_bp
 from routes.paniers import paniers_bp
 from routes.panier_items import panier_items_bp
-import os
 
 load_dotenv()
 
