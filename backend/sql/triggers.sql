@@ -1,8 +1,9 @@
 -- Triggers pour le système de fidélité
-USE brique_buster;
+# USE brique_buster;
 
 -- Supprime tous les triggers existants avant de les recréer
 DROP TRIGGER IF EXISTS create_fidelite;
+DROP TRIGGER IF EXISTS create_panier;
 DROP TRIGGER IF EXISTS update_fidelite;
 DROP TRIGGER IF EXISTS DecrementeStockApresReservation;
 
@@ -56,8 +57,8 @@ BEGIN
 
     SELECT id INTO nouvelle_categorie_id
     FROM categorie_fidelite
-    WHERE points_requis <= (SELECT points FROM fidelite WHERE user_id = NEW.user_id)
-    ORDER BY points_requis DESC
+    WHERE seuil_minimum <= (SELECT points FROM fidelite WHERE user_id = NEW.user_id)
+    ORDER BY seuil_minimum DESC
     LIMIT 1;
 
     UPDATE fidelite

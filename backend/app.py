@@ -1,6 +1,7 @@
 import click
 import os
 import sys
+import importlib.util
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
@@ -109,6 +110,15 @@ def init_db():
     with app.app_context():
         db.create_all()
         load_sql_objects()
+        try:
+            # Charger le module seed.py
+            seed_path = os.path.join(os.path.dirname(__file__), "scripts", "seed.py")
+            spec = importlib.util.spec_from_file_location("seed", seed_path)
+            seed_module = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(seed_module)
+            print("Données initiales chargées avec succès.")
+        except Exception as e:
+            print(f"Erreur lors du chargement des données initiales: {str(e)}")
     print("Base de données créée et tables initialisées avec succès.")
 
 @click.command(name='start_db')

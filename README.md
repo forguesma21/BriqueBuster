@@ -1,9 +1,4 @@
 ## <center> Projet </center>
-
-Description
-
-### Prérequis 
-
 # Lancement du projet
 ## 1. Création d'environnement virtuel python
 > À faire seulement si vous n'en avez pas déjà un
@@ -15,10 +10,10 @@ Description
 ## 2. Installation des dépendances
 1. ```python -m pip install -r requirements.txt```
 
-## Initialisation de la base de données
-1. Ouvrir le fichier .env et y entrer les informations de la BD de votre choix ou créer une base de donnée mysql nommée "brique_buster"
-2.  ```python initialize_db.py```
-2. ```python seed.py```
+## 3. Initialisation de la base de données
+1. Ouvrir le fichier .env et y entrer les informations de la BD de votre 
+2. ```python setup.py```
+3.  ```flask init_db```
 
-## Démarrer l'application 
-1. ```python app.py```
+## 4. Démarrer l'application 
+1. ```flask run```

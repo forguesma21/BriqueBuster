@@ -24,16 +24,16 @@ try:
 
         # seed des cat de fidelite
         categories = [
-            (0, "Cassette Basique",  0),
-            (1, "VHS Classique",  100),
-            (2, "Édition Collector",  500),
-            (3, "LaserDisc Élite", 1000),
-            (4, "Master du Magnétoscope", 2500)
+            ("Cassette Basique",  0),
+            ("VHS Classique",  100),
+            ("Édition Collector",  500),
+            ("LaserDisc Élite", 1000),
+            ("Master du Magnétoscope", 2500)
         ]
 
         requete_categorie = """
-                INSERT INTO categorie_fidelite (id, nom, seuil_minimum)
-                VALUES (%s, %s, %s)
+                INSERT INTO categorie_fidelite (nom, seuil_minimum)
+                VALUES (%s, %s)
                 """
 
         cursor.executemany(requete_categorie, categories)

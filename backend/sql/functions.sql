@@ -1,4 +1,6 @@
 -- sql/functions.sql
+DROP FUNCTION IF EXISTS total_utilisateurs;
+DROP FUNCTION IF EXISTS calculer_total_reservations;
 
 DELIMITER //
 

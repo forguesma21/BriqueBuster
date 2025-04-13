@@ -1,4 +1,6 @@
 -- backend/scripts/procedures.sql
+DROP PROCEDURE IF EXISTS AjoutPanier;
+DROP PROCEDURE IF EXISTS ObtenirPanier;
 DROP PROCEDURE IF EXISTS CreerReservation;
 
 DELIMITER //
@@ -43,9 +45,6 @@ BEGIN
 
 END;
 
-DELIMITER ;
-
-DELIMITER //
 
 CREATE PROCEDURE ObtenirPanier(IN userID VARCHAR(36))
 proc_label: BEGIN
@@ -55,9 +54,8 @@ proc_label: BEGIN
     SELECT id INTO panierID FROM paniers WHERE user_id = userID LIMIT 1;
 
     IF panierID IS NULL THEN
-    SELECT NULL AS produit_id, NULL AS nom, NULL AS prix, NULL AS quantite, NULL AS en_stock LIMIT 0;
-    LEAVE proc_label;
-
+        SELECT 'Aucun panier trouvé pour cet utilisateur' AS message;
+        LEAVE proc_label;
     END IF;
 
     -- Récupérer les produits du panier
@@ -73,106 +71,7 @@ proc_label: BEGIN
     WHERE pi.panier_id = panierID;
 
 END;
-//
 
-DELIMITER ;
-DELIMITER //
-
-CREATE PROCEDURE CreerReservation(IN userID VARCHAR(36))
-BEGIN
-    DECLARE panierID VARCHAR(36);
-    DECLARE total NUMERIC(10, 2);
-    DECLARE reservationID VARCHAR(36);
-
-    -- Trouver le panier
-    SELECT id INTO panierID FROM paniers WHERE user_id = userID LIMIT 1;
-
-    IF panierID IS NULL THEN
-        SIGNAL SQLSTATE '45000'
-        SET MESSAGE_TEXT = 'Aucun panier trouvé pour cet utilisateur.';
-    END IF;
-
-    -- Calculer le montant total
-    SELECT SUM(p.quantite * pr.prix) INTO total
-    FROM panier_items p
-    JOIN produits pr ON p.produit_id = pr.id
-    WHERE p.panier_id = panierID;
-
-    IF total IS NULL THEN
-        SIGNAL SQLSTATE '45000'
-        SET MESSAGE_TEXT = 'Le panier est vide.';
-    END IF;
-
-    -- Créer la réservation
-    INSERT INTO reservations(id, user_id, date_reservation, date_fin, montant_total)
-    VALUES (
-        UUID(),
-        userID,
-        NOW(),
-        DATE_ADD(NOW(), INTERVAL 7 DAY),
-        total
-    );
-
-    -- Récupérer l'id de la réservation juste créée
-    SELECT id INTO reservationID
-    FROM reservations
-    WHERE user_id = userID
-    ORDER BY date_reservation DESC
-    LIMIT 1;
-
-    -- Copier les items
-    INSERT INTO reservations_items (reservation_id, produit_id, quantite)
-    SELECT reservationID, produit_id, quantite
-    FROM panier_items
-    WHERE panier_id = panierID;
-
-    -- Vider le panier
-    DELETE FROM panier_items WHERE panier_id = panierID;
-END;
-//
-
-DELIMITER ;
-
-DELIMITER //
-
-CREATE PROCEDURE ObtenirHistoriqueReservations(IN userID VARCHAR(36))
-BEGIN
-    SELECT
-        r.id AS reservation_id,
-        r.date_reservation,
-        r.date_fin,
-        r.montant_total,
-        ri.produit_id,
-        ri.quantite,
-        p.nom AS produit_nom,
-        p.categorie,
-        p.annee,
-        p.prix
-    FROM reservations r
-    JOIN reservations_items ri ON r.id = ri.reservation_id
-    JOIN produits p ON p.id = ri.produit_id
-    WHERE r.user_id = userID
-    ORDER BY r.date_reservation DESC;
-END;
-//
-
-DELIMITER ;
-
-DELIMITER //
-
-CREATE PROCEDURE ObtenirProfilUtilisateur(IN userID VARCHAR(36))
-BEGIN
-    SELECT
-        u.nom,
-        u.prenom,
-        u.courriel,
-        f.points,
-        cf.nom AS categorie
-    FROM utilisateurs u
-    LEFT JOIN fidelite f ON u.id = f.user_id
-    LEFT JOIN categorie_fidelite cf ON f.categorie_id = cf.id
-    WHERE u.id = userID;
-END;
 //
 
 DELIMITER ;
