@@ -43,8 +43,6 @@ BEGIN
 
 END;
 
-//
-
 DELIMITER ;
 
 DELIMITER //
