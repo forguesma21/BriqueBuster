@@ -5,14 +5,16 @@ interface State {
   loggedIn: boolean;
   userId: string;
   userName: string;
+  cartCount: 0
+
 }
 
 export default createStore({
   state: {
     loggedIn: false,
     userId: '',
-    userName: ''
-
+    userName: '',
+    cartCount: 0
   },
   mutations: {
     async login(state: State, userId: string) {
@@ -26,6 +28,15 @@ export default createStore({
       state.userId = '';
       state.userName = '';
     },
+   setCartCount(state, count) {
+    state.cartCount = count
+    },
+    incrementCartCount(state) {
+      state.cartCount++
+    },
+    decrementCartCount(state) {
+      state.cartCount = Math.max(0, state.cartCount - 1)
+    }
   },
   actions: {
     login({ commit }, userId: string) {

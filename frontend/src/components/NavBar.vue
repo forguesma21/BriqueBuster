@@ -73,16 +73,17 @@ const toast = useToast()
 const loggedIn = computed(() => store.state.loggedIn)
 const userName = computed(() => store.state.userName)
 
-const nombreItemsPanier = ref(0)
+const nombreItemsPanier = computed(() => store.state.cartCount)
 
 const chargerPanier = async () => {
   if (!store.state.userId) return
   try {
     const produits = await obtenirPanier(store.state.userId)
-    nombreItemsPanier.value =  produits.reduce((acc, p) => acc + p.quantite, 0)
+    const count = produits.reduce((acc, p) => acc + p.quantite, 0)
+    store.commit("setCartCount", count)
+
   } catch (error) {
     console.error('Erreur panier:', error)
-    nombreItemsPanier.value = 0
   }
 }
 

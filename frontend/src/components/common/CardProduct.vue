@@ -38,12 +38,12 @@ export default defineComponent({
     const store = useStore()
 
     const ajoutPanier = async () => {
-      const userID = store.state.userId
       try {
         console.log("User connecté :", store.state.userId)
         console.log("Id produit", props.produitId)
 
         await ajouterAuPanier(store.state.userId, props.produitId, 1)
+        store.commit("incrementCartCount", store.state.cartCount)
 
         toast.success(`${props.nom} a été ajouté au panier !`, {
           toastClassName: 'bg-trempanilloVert font-bold'
