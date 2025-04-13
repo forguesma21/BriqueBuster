@@ -112,13 +112,14 @@ export default defineComponent({
     })
 
     produits.value = []
+    store.commit("setCartCount", 0)
+
   } catch (error) {
     toast.error(error.message, {
       toastClassName: "bg-BbRed font-bold"
     })
   }
 }
-
 
     onMounted(() => {
       chargerPanier()

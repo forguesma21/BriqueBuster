@@ -3,7 +3,10 @@ USE brique_buster;
 
 -- Supprime tous les triggers existants avant de les recréer
 DROP TRIGGER IF EXISTS create_fidelite;
-DROP TRIGGER IF EXISTS update_fidelite;
+DROP TRIGGER IF EXISTS update_fidelite
+DROP TRIGGER IF EXISTS
+
+
 
 DELIMITER //
 
@@ -45,22 +48,18 @@ BEGIN
     DECLARE total_points INT;
     DECLARE nouvelle_categorie_id INT;
 
-    -- Calcul des points gagnés : chaque dollar donne 1 point
     SET total_points = NEW.montant_total;
 
-    -- Mise à jour des points dans la table fidelite
     UPDATE fidelite
     SET points = points + total_points
     WHERE user_id = NEW.user_id;
 
-    -- Récupère la nouvelle catégorie fidélité en fonction des points accumulés
     SELECT id INTO nouvelle_categorie_id
     FROM categorie_fidelite
     WHERE points_requis <= (SELECT points FROM fidelite WHERE user_id = NEW.user_id)
     ORDER BY points_requis DESC
     LIMIT 1;
 
-    -- Mise à jour de la catégorie fidélité
     UPDATE fidelite
     SET categorie_id = nouvelle_categorie_id
     WHERE user_id = NEW.user_id;
@@ -68,3 +67,18 @@ END;
 //
 
 DELIMITER ;
+
+DELIMITER //
+
+CREATE TRIGGER DecrementeStockApresReservation
+AFTER INSERT ON reservations_items
+FOR EACH ROW
+BEGIN
+    UPDATE produits
+    SET en_stock = en_stock - NEW.quantite
+    WHERE id = NEW.produit_id;
+END;
+//
+
+DELIMITER ;
+
