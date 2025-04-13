@@ -1,6 +1,6 @@
 -- sql/functions.sql
 
-# DELIMITER //
+DELIMITER //
 
 CREATE FUNCTION total_utilisateurs()
 RETURNS INT
@@ -23,4 +23,4 @@ BEGIN
     RETURN IFNULL(total, 0);
 END;
 
-# //
+//
