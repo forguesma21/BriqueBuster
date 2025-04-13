@@ -12,7 +12,7 @@
 
 ## 3. Initialisation de la base de données
 1. Ouvrir le fichier .env et y entrer les informations de la BD de votre 
-2. ```python setup.py```
+2. ```pip install -e .```
 3.  ```flask init_db```
 
 ## 4. Démarrer l'application 
