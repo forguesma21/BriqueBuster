@@ -9,6 +9,8 @@ Description
 > À faire seulement si vous n'en avez pas déjà un
 1. ```python -m venv venv``` (si vous n'avez pas d'environnement virtuel déjà créé)
 2. ```venv\Scripts\activate```
+> [!CAUTION]
+> En cas d'erreur, assurez vous que votre environnement virtuel est sur python 3.10
 
 ## 2. Installation des dépendances
 1. ```python -m pip install -r requirements.txt```
