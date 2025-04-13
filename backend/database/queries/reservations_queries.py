@@ -22,9 +22,6 @@ def creer_reservation(user_id: str):
             "message": str(e)
         }
 
-from sqlalchemy import text
-from database.db import db
-
 def obtenir_historique_reservations(user_id: str):
     try:
         result = db.session.execute(

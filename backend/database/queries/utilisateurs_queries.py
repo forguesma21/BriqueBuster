@@ -1,5 +1,6 @@
 from database.models import Utilisateurs
 from database.db import db
+from sqlalchemy import text
 
 def verifier_utilisateur_existant(courriel):
     return Utilisateurs.query.filter_by(courriel=courriel).first()
@@ -27,7 +28,7 @@ def obtenir_profil_utilisateur(user_id: str):
                 "nom": f"{row.prenom} {row.nom}",
                 "courriel": row.courriel,
                 "points": row.points or 0,
-                "statut": row.categorie or "Aucun"
+                "statut": row.categorie or "Cassette Basique"
             }
         else:
             return {"success": False, "message": "Utilisateur non trouvé."}

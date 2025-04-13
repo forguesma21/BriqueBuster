@@ -15,9 +15,7 @@ export async function reserverPanier(userId) {
 
 export async function obtenirHistoriqueReservations(userId){
   try {
-    const response = await axios.post(`${API_URL}/utilisateur//${userId}`, {
-      user_id: userId
-    })
+    const response = await axios.get(`${API_URL}/utilisateur/${userId}`)
     return response.data
   }catch(error){
     throw new Error(error.response?.data?.message || 'Erreur lors de la réservation.')

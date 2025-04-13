@@ -11,6 +11,7 @@ from routes.produits import produits_bp
 from routes.paniers import paniers_bp
 from routes.panier_items import panier_items_bp
 from routes.reservations import reservations_bp
+from routes.fidelite import fidelite_bp
 
 import os
 
@@ -29,6 +30,7 @@ app.register_blueprint(produits_bp, url_prefix='/produits', name='produits_bp')
 app.register_blueprint(paniers_bp, url_prefix='/paniers', name='paniers_bp')
 app.register_blueprint(panier_items_bp, url_prefix='/panier_items', name='panier_items_bp')
 app.register_blueprint(reservations_bp, url_prefix="/reservations")
+app.register_blueprint(fidelite_bp, url_prefix="/fidelite")
 
 
 @click.command(name='start_db')

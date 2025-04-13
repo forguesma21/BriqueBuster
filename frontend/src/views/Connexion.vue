@@ -79,7 +79,7 @@ import { connexionUtilisateur } from '../api/utilisateurs.js';
                       courriel: this.email,
                       motDePasse: this.password
                     };
-           const response = await connexionUtilisateur(utilisateur); // Appel de ton API
+           const response = await connexionUtilisateur(utilisateur);
 
         if (response && response.utilisateurID) {
           this.logIn(response.utilisateurID);
@@ -101,7 +101,9 @@ import { connexionUtilisateur } from '../api/utilisateurs.js';
       courrielValide(courriel: string) {
         const formatCourriel = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if(!formatCourriel.test(courriel)) {
-          this.toast.warning("Le courriel ne respecte pas le format requis.", {toastClassName: "bg-trempanilloBeige font-bold"});
+          toast.error("Le courriel ne respecte pas le format requis.", {
+              toastClassName: "bg-BbRed font-bold"
+          })
           return false;
         }
         return true;

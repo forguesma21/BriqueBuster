@@ -1,3 +1,36 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+  --bb-white: #FFFFFF;
+  --bb-light-brown: #CAB7A1;
+  --bb-light-purple: #F6EDFA;
+  --bb-red: #D82B1E;
+  --bb-dark-blue: #292F36;
+  --bb-sky-dark: #064C72;
+  --bb-sky-medium: #026C80;
+  --bb-sky-light: #8DB4AD;
+  --bb-beige: #ECAE7D;
+  --bb-orange: #ED6335;
+  --bb-pink: #E53373;
+
+  --bg-main: #F6EDFA;        /* Fond principal pale violacé */
+  --bg-alt: #ECEDE9;         /* Fond alternatif beige pâle */
+  --bg-card: #FFFFFF;        /* Fond des cartes */
+  --text-dark: #292F36;      /* Texte principal */
+  --text-medium: #555B66;    /* Texte secondaire */
+  --text-light: #8DB4AD;     /* Texte léger */
+
+  --accent-primary: #ECAE7D;  /* Accent principal beige */
+  --accent-secondary: #E53373; /* Accent secondaire rose */
+  --accent-tertiary: #8DB4AD; /* Accent tertiaire bleu-gris */
+
+  --border-light: #CAB7A1;   /* Bordure claire */
+  --border-dark: #064C72;    /* Bordure foncée */
+
+  --success: #8DB4AD;        /* Couleur de succès */
+  --highlight: #ED6335;      /* Couleur de mise en évidence */
+
+  --shadow-soft: rgba(41, 47, 54, 0.15); /* Ombre douce */
+}

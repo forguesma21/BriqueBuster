@@ -33,9 +33,7 @@ export async function connexionUtilisateur(utilisateur) {
 
 export async function obtenirProfilUtilisateur(userId) {
   try {
-      const response = await axios.get(`\${API_URL}/profil`, {
-      user_id: userId
-      })
+      const response = await axios.get(`${API_URL}/${userId}`)
       return response.data
   } catch(error){
       throw new Error(error.response.data.message || "Erreur.");
