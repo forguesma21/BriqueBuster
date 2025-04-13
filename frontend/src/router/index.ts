@@ -24,8 +24,8 @@ const routes: Array<RouteRecordRaw> = [
     props: true,
   },
   {
-    path: '/utilisateur',
-    name: 'Utilisateur',
+    path: '/panier',
+    name: 'Panier',
     component: Panier,
   },
   {

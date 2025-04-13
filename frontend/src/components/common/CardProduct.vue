@@ -10,7 +10,7 @@
       <p class="text-md text-gray-500">En stock: {{ enStock }}</p>
 
       <button
-        @click="ajouterAuPanier"
+        @click="ajoutPanier"
         class="px-4 py-2 mt-3 bg-black text-white border-2 border-black hover:bg-white hover:text-black transition-all"
       >
         Ajouter au panier
@@ -19,35 +19,49 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script>
+import { useToast } from 'vue-toastification'
+import { useStore } from 'vuex'
+import { defineComponent } from 'vue'
+import { ajouterAuPanier } from '@/api/paniers'
 
 export default defineComponent({
-  name: 'ProductCard',
+  name: 'CardProduct',
   props: {
-    nom: {
-      type: String,
-      required: true
-    },
-    prix: {
-      type: Number,
-      required: true
-    },
-    enStock: {
-      type: Number,
-      required: true
-    },
-    produitId: {
-      type: String,
-      required: true
-    }
+    nom: String,
+    prix: Number,
+    enStock: Number,
+    produitId: String
   },
-  methods: {
-    ajouterAuPanier() {
-      console.log(`Produit ajouté au panier: ${this.nom} (ID: ${this.produitId})`);
+  setup(props) {
+    const toast = useToast()
+    const store = useStore()
+
+    const ajoutPanier = async () => {
+      const userID = store.state.userId
+      try {
+        console.log("User connecté :", store.state.userId)
+        console.log("Id produit", props.produitId)
+
+        await ajouterAuPanier(store.state.userId, props.produitId, 1)
+
+        toast.success(`${props.nom} a été ajouté au panier !`, {
+          toastClassName: 'bg-trempanilloVert font-bold'
+        })
+      } catch (error) {
+        console.error(error)
+        toast.error(
+          error?.response?.data?.message || 'Erreur lors de l’ajout au panier.',
+          { toastClassName: 'bg-BbRed font-bold' }
+        )
+      }
+    }
+
+    return {
+      ajoutPanier
     }
   }
-});
+})
 </script>
 
 <style scoped>

@@ -10,12 +10,14 @@ from routes.utilisateurs import utilisateurs_bp
 from routes.produits import produits_bp
 from routes.paniers import paniers_bp
 from routes.panier_items import panier_items_bp
+from routes.reservations import reservations_bp
+
 import os
 
 load_dotenv()
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, origin='http://localhost:5174')
 migrate = Migrate(app, db)
 
 app.config.from_object('config.Config')
@@ -25,7 +27,8 @@ db.init_app(app)
 app.register_blueprint(utilisateurs_bp, url_prefix='/utilisateurs', name='utilisateurs_bp')
 app.register_blueprint(produits_bp, url_prefix='/produits', name='produits_bp')
 app.register_blueprint(paniers_bp, url_prefix='/paniers', name='paniers_bp')
-app.register_blueprint(panier_items_bp, url_prefix='/paniers_items', name='paniers_items_bp')
+app.register_blueprint(panier_items_bp, url_prefix='/panier_items', name='panier_items_bp')
+app.register_blueprint(reservations_bp, url_prefix="/reservations")
 
 
 @click.command(name='start_db')

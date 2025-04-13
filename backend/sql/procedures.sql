@@ -1,14 +1,17 @@
 -- backend/scripts/procedures.sql
+DROP PROCEDURE IF EXISTS CreerReservation;
 
 DELIMITER //
 
 CREATE PROCEDURE AjoutPanier(
     IN userID VARCHAR(36),
     IN produitID VARCHAR(36),
-    IN quantite INT
+    IN quantiteAjoutee INT
 )
 BEGIN
     DECLARE panierID VARCHAR(36);
+    DECLARE stockDisponible INT;
+    DECLARE itemCount INT;
 
     SELECT id INTO panierID FROM paniers WHERE user_id = userID LIMIT 1;
 
@@ -47,16 +50,17 @@ DELIMITER ;
 DELIMITER //
 
 CREATE PROCEDURE ObtenirPanier(IN userID VARCHAR(36))
-BEGIN
+proc_label: BEGIN
     DECLARE panierID VARCHAR(36);
 
     -- Trouver l'id du panier de l'utilisateur
     SELECT id INTO panierID FROM paniers WHERE user_id = userID LIMIT 1;
 
     IF panierID IS NULL THEN
-        SELECT 'Aucun panier trouvé pour cet utilisateur' AS message;
-        LEAVE;
-    END IF;
+    SELECT NULL AS produit_id, NULL AS nom, NULL AS prix, NULL AS quantite, NULL AS en_stock LIMIT 0;
+    LEAVE proc_label;
+END IF;
+
 
     -- Récupérer les produits du panier
     SELECT
@@ -71,7 +75,62 @@ BEGIN
     WHERE pi.panier_id = panierID;
 
 END;
+//
 
+DELIMITER ;
+DELIMITER //
+
+CREATE PROCEDURE CreerReservation(IN userID VARCHAR(36))
+BEGIN
+    DECLARE panierID VARCHAR(36);
+    DECLARE total NUMERIC(10, 2);
+    DECLARE reservationID VARCHAR(36);
+
+    -- Trouver le panier
+    SELECT id INTO panierID FROM paniers WHERE user_id = userID LIMIT 1;
+
+    IF panierID IS NULL THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Aucun panier trouvé pour cet utilisateur.';
+    END IF;
+
+    -- Calculer le montant total
+    SELECT SUM(p.quantite * pr.prix) INTO total
+    FROM panier_items p
+    JOIN produits pr ON p.produit_id = pr.id
+    WHERE p.panier_id = panierID;
+
+    IF total IS NULL THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Le panier est vide.';
+    END IF;
+
+    -- Créer la réservation
+    INSERT INTO reservations(id, user_id, date_reservation, date_fin, montant_total)
+    VALUES (
+        UUID(),
+        userID,
+        NOW(),
+        DATE_ADD(NOW(), INTERVAL 7 DAY),
+        total
+    );
+
+    -- Récupérer l'id de la réservation juste créée
+    SELECT id INTO reservationID
+    FROM reservations
+    WHERE user_id = userID
+    ORDER BY date_reservation DESC
+    LIMIT 1;
+
+    -- Copier les items
+    INSERT INTO reservations_items (reservation_id, produit_id, quantite)
+    SELECT reservationID, produit_id, quantite
+    FROM panier_items
+    WHERE panier_id = panierID;
+
+    -- Vider le panier
+    DELETE FROM panier_items WHERE panier_id = panierID;
+END;
 //
 
 DELIMITER ;

@@ -7,7 +7,7 @@
       <form @submit.prevent="submitForm" class="space-y-6">
          <div>
           <label for="firstname" class="block text-sm mb-2 text-gray-700">PRÉNOM</label>
-          <input v-model="firstname" required :type="text" :id="firstname" placeholder="VOTRE PRÉNOM"
+          <input v-model="firstname" required :type="firstname" :id="firstname" placeholder="VOTRE PRÉNOM"
             class="placeholder:text-sm w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
         </div>
 
@@ -23,7 +23,6 @@
             class="placeholder:text-sm w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
         </div>
 
-        <!-- Password -->
         <div>
           <label for="password" class="block text-sm mb-2 text-gray-700">MOT DE PASSE</label>
           <input v-model="password" required :type="password" :id="password" placeholder="VOTRE MOT DE PASSE"
@@ -44,7 +43,7 @@
   import { useRouter } from "vue-router";
   import { useStore } from "vuex";
   import { useToast } from "vue-toastification";
-  import ButtonRetro from "../components/common/ButtonRetro.vue";
+  import ButtonRetro from "@/components/common/ButtonRetro.vue";
   import { inscriptionUtilisateur } from '../api/utilisateurs.js';
 
   
@@ -83,18 +82,27 @@
         if (this.validationInscription()) {
           console.log("Attempt d'inscription")
           try {
-              const utilisateur = {
-                prenom: this.firstname,
-                nom: this.lastname,
-                motDePasse: this.password,
-                courriel: this.email};
+            const utilisateur = {
+              prenom: this.firstname,
+              nom: this.lastname,
+              motDePasse: this.password,
+              courriel: this.email
+            };
 
-              console.log(utilisateur)
-              const response = await inscriptionUtilisateur(utilisateur);
-              this.logIn(response.utilisateurID); // Enregis
-          }catch(error){
-            this.toast.error("Avez-vous un compte?\nCe courriel est déjà utilisé par un autre utilisateur!", {toastClassName: "bg-BbRed font-bold"});
-          }
+            console.log(utilisateur)
+            const response = await inscriptionUtilisateur(utilisateur);
+            this.logIn(response.utilisateurID);
+          } catch (error: any) {
+            const message =
+              error?.response?.data?.message ||
+              error?.message ||
+              "Une erreur inconnue est survenue";
+
+            this.toast.error(message, {
+              toastClassName: "bg-BbRed font-bold"
+            });
+}
+
           
         }
       },
