@@ -29,10 +29,8 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, ref } from "vue";
-import CardProduct from '@/components/common/CardProduct.vue';
 import { recuperer_produits } from '../api/produits.js';
-
-
+import CardProduct from '@/components/common/CardProduct.vue';
 
 export default defineComponent({
   name: "AccueilMagasin",

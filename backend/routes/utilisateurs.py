@@ -1,12 +1,8 @@
 from flask import Blueprint, request, jsonify
 from werkzeug.security import generate_password_hash, check_password_hash
-
 from database.models import Utilisateurs
-from database import db
-
-# Importation des utilitaires
-from utils.formatters import formatter_info_utilisateur
 from database.queries.utilisateurs_queries import verifier_utilisateur_existant, ajouter_utilisateur
+from database.queries.utilisateurs_queries import obtenir_profil_utilisateur
 
 utilisateurs_bp = Blueprint('utilisateurs', __name__)
 
@@ -46,3 +42,12 @@ def inscription():
             return jsonify(resultat), 500
     except Exception as e:
         return jsonify({"message": str(e)}), 500
+
+
+@utilisateurs_bp.route("/<user_id>", methods=["GET"])
+def profil_utilisateur(user_id):
+    result = obtenir_profil_utilisateur(user_id)
+    if result["success"]:
+        return jsonify(result), 200
+    else:
+        return jsonify({"message": result["message"]}), 404

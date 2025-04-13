@@ -22,8 +22,8 @@
           <ButtonRetro v-if="!loggedIn">S'inscrire</ButtonRetro>
         </router-link>
 
-        <router-link to="/panier">
-          <ButtonRetro v-if="loggedIn">Compte</ButtonRetro>
+        <router-link to="/profil">
+          <ButtonRetro v-if="loggedIn">Profil</ButtonRetro>
         </router-link>
 
         <ButtonRetro @click="logOutAccount" v-if="loggedIn">Se Déconnecter</ButtonRetro>
@@ -61,7 +61,7 @@
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import { useToast } from 'vue-toastification'
-import { computed, ref, watchEffect, onMounted } from 'vue'
+import { computed, watchEffect, onMounted } from 'vue'
 
 import ButtonRetro from '@/components/common/ButtonRetro.vue'
 import { obtenirPanier } from '@/api/paniers.js'

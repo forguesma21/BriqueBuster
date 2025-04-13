@@ -13,14 +13,27 @@ def ajouter_utilisateur(utilisateur):
         db.session.rollback()
         return {"success": False, "message": str(e)}
 
-def recuperer_utilisateur_par_id(utilisateur_id):
+def obtenir_profil_utilisateur(user_id: str):
     try:
-        utilisateur = Utilisateurs.query.get(utilisateur_id)
-        if utilisateur:
-            return utilisateur
+        result = db.session.execute(
+            text("CALL ObtenirProfilUtilisateur(:userID)"),
+            {"userID": user_id}
+        )
+
+        row = result.fetchone()
+        if row:
+            return {
+                "success": True,
+                "nom": f"{row.prenom} {row.nom}",
+                "courriel": row.courriel,
+                "points": row.points or 0,
+                "statut": row.categorie or "Aucun"
+            }
         else:
-            return {"success": False, "message": "Utilisateur introuvable."}
+            return {"success": False, "message": "Utilisateur non trouvé."}
+
     except Exception as e:
+        print("🛑 Erreur SQL ObtenirProfilUtilisateur :", e)
         return {"success": False, "message": str(e)}
 
 def lister_utilisateurs():

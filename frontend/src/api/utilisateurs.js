@@ -30,3 +30,14 @@ export async function connexionUtilisateur(utilisateur) {
             throw new Error(error.response.data.message || "Erreur.");
     }
     }}
+
+export async function obtenirProfilUtilisateur(userId) {
+  try {
+      const response = await axios.get(`\${API_URL}/profil`, {
+      user_id: userId
+      })
+      return response.data
+  } catch(error){
+      throw new Error(error.response.data.message || "Erreur.");
+  }
+}

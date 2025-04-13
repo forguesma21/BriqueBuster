@@ -59,8 +59,8 @@ proc_label: BEGIN
     IF panierID IS NULL THEN
     SELECT NULL AS produit_id, NULL AS nom, NULL AS prix, NULL AS quantite, NULL AS en_stock LIMIT 0;
     LEAVE proc_label;
-END IF;
 
+    END IF;
 
     -- Récupérer les produits du panier
     SELECT
@@ -130,6 +130,50 @@ BEGIN
 
     -- Vider le panier
     DELETE FROM panier_items WHERE panier_id = panierID;
+END;
+//
+
+DELIMITER ;
+
+DELIMITER //
+
+CREATE PROCEDURE ObtenirHistoriqueReservations(IN userID VARCHAR(36))
+BEGIN
+    SELECT
+        r.id AS reservation_id,
+        r.date_reservation,
+        r.date_fin,
+        r.montant_total,
+        ri.produit_id,
+        ri.quantite,
+        p.nom AS produit_nom,
+        p.categorie,
+        p.annee,
+        p.prix
+    FROM reservations r
+    JOIN reservations_items ri ON r.id = ri.reservation_id
+    JOIN produits p ON p.id = ri.produit_id
+    WHERE r.user_id = userID
+    ORDER BY r.date_reservation DESC;
+END;
+//
+
+DELIMITER ;
+
+DELIMITER //
+
+CREATE PROCEDURE ObtenirProfilUtilisateur(IN userID VARCHAR(36))
+BEGIN
+    SELECT
+        u.nom,
+        u.prenom,
+        u.courriel,
+        f.points,
+        cf.nom AS categorie
+    FROM utilisateurs u
+    LEFT JOIN fidelite f ON u.id = f.user_id
+    LEFT JOIN categorie_fidelite cf ON f.categorie_id = cf.id
+    WHERE u.id = userID;
 END;
 //
 

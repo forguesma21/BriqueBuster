@@ -6,6 +6,7 @@ import Produit from '@/views/Produit.vue'
 import Panier from '@/views/Panier.vue'
 import Connexion from '@/views/Connexion.vue'
 import Inscription from '@/views/Inscription.vue'
+import Utilisateur from '@/views/Utilisateur.vue';
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -27,6 +28,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/panier',
     name: 'Panier',
     component: Panier,
+  },
+    {
+    path: '/profil',
+    name: 'Profil',
+    component: Utilisateur,
   },
   {
     path: '/connexion',

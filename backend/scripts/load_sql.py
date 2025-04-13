@@ -19,7 +19,6 @@ def execute_sql_file(file_path):
     cursor.close()
     conn.close()
 
-
 if __name__ == "__main__":
     app = Flask(__name__)
     app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:password@localhost/nom_de_ta_base'

@@ -3,8 +3,8 @@ USE brique_buster;
 
 -- Supprime tous les triggers existants avant de les recréer
 DROP TRIGGER IF EXISTS create_fidelite;
-DROP TRIGGER IF EXISTS update_fidelite
-DROP TRIGGER IF EXISTS
+DROP TRIGGER IF EXISTS update_fidelite;
+DROP TRIGGER IF EXISTS DecrementeStockApresReservation;
 
 
 
@@ -69,7 +69,7 @@ END;
 DELIMITER ;
 
 DELIMITER //
-
+-- Trigger pour mettre à jour les stocks après une réservation
 CREATE TRIGGER DecrementeStockApresReservation
 AFTER INSERT ON reservations_items
 FOR EACH ROW
