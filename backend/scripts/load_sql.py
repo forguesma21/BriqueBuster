@@ -27,7 +27,7 @@ def execute_sql_file(file_path):
 
 if __name__ == "__main__":
     app = Flask(__name__)
-    app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+pymysql://root:root@localhost/brique_buster'
+    app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+pymysql://root:admin@localhost/brique_buster'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     db.init_app(app)
 

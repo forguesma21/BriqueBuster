@@ -11,6 +11,7 @@ DB_USER = os.getenv('DB_USER')
 DB_PASSWORD = os.getenv('DB_PASSWORD')
 DB_NAME = os.getenv('DB_NAME')
 
+
 try:
     connection = mysql.connector.connect(
         host=DB_HOST,
