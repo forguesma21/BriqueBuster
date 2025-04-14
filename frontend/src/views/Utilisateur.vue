@@ -658,7 +658,7 @@ onMounted(() => {
 .loyalty-mini-title {
   margin: 0;
   font-size: 18px;
-  color: var(--accent-secondary);
+  color: var(--bb-pink);
   text-shadow: 1px 1px 0 #000;
   letter-spacing: 1px;
 }

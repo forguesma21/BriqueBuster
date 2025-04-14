@@ -28,12 +28,7 @@ def ajouter_au_panier():
 
 @panier_items_bp.route("/<user_id>", methods=["GET"])
 def afficher_panier(user_id):
-    print("🔍 Requête GET /paniers reçue pour user_id :", user_id)
-
     result = obtenir_panier_utilisateur(user_id)
-
-    print("🧪 Résultat retourné :", result)
-
     if result["success"]:
         response = jsonify(result["produits"])
         status_code = 200

@@ -46,7 +46,6 @@ def obtenir_panier_utilisateur(user_id: str):
         rows = result.fetchall()
         produits = [dict(row._mapping) for row in rows]
 
-        # ✅ Vider les autres résultats si présents (certains drivers MySQL les créent en silence)
         try:
             while result.nextset():
                 pass
