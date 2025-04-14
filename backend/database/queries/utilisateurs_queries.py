@@ -37,14 +37,16 @@ def obtenir_profil_utilisateur(user_id: str):
 
         row = result.fetchone()
         if row:
+            row=row._mapping
             print("👤 Profil trouvé :", row)
 
             return {
                 "success": True,
-                "nom": f"{row.prenom} {row.nom}",
-                "courriel": row.courriel,
-                "points": row.points or 0,
-                "statut": row.categorie or "Cassette Basique"
+                "nom": row["nom"],
+                "prenom": row["prenom"],
+                "courriel": row["courriel"],
+                "points": row["points"],
+                "statut": row["statut"]
             }
         else:
             return {"success": False, "message": "Utilisateur non trouvé."}

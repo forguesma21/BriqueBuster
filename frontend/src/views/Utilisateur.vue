@@ -5,7 +5,7 @@
       <div class="user-card">
         <div class="pixel-avatar"></div>
         <div class="user-info">
-          <h1 class="loyalty-mini-title">{{ user.nom.toUpperCase() }}</h1>
+          <h1 class="loyalty-mini-title">{{ user.prenom.toUpperCase() }} {{user.nom.toUpperCase()}}</h1>
           <p class="user-email">{{ user.courriel }}</p>
         </div>
       </div>
@@ -149,6 +149,7 @@ const paliers = ref([])
 
 const user = ref({
   nom: '',
+  prenom: '',
   courriel: '',
   statut: '',
   points: 0
@@ -218,6 +219,7 @@ const chargerProfil = async () => {
 
     user.value = {
       nom: profil.nom,
+      prenom: profil.prenom,
       courriel: profil.courriel,
       statut: profil.statut,
       points: profil.points
@@ -425,7 +427,7 @@ onMounted(() => {
 }
 
 .rental-summary {
-  font-size: 14px;
+  font-size: 15px;
   color: var(--bb-dark-blue);
   margin-top: 5px;
 }
@@ -438,7 +440,7 @@ onMounted(() => {
 }
 
 .total-label {
-  font-size: 12px;
+  font-size: 15px;
   color: var(--bb-dark-blue);
 }
 
@@ -446,20 +448,6 @@ onMounted(() => {
   font-weight: bold;
   font-size: 20px;
   color: var(--bb-dark-blue);
-}
-
-.rental-status {
-  padding: 8px 12px;
-  font-size: 14px;
-  font-weight: bold;
-  text-align: center;
-  width: 100px;
-}
-
-.rental-status.returned {
-  background-color: var(--accent-tertiary);
-  color: #000000;
-  box-shadow: 3px 3px 0 #000000;
 }
 
 .expand-icon {
@@ -517,7 +505,7 @@ onMounted(() => {
 }
 
 .item-category {
-  font-size: 12px;
+  font-size: 15px;
   color: var(--text-medium);
   margin-top: 3px;
 }
@@ -547,22 +535,6 @@ onMounted(() => {
   text-shadow: 1px 1px 0 #000000;
 }
 
-.reorder-button {
-  padding: 10px 18px;
-  background-color: #FF6B35;
-  color: #000000;
-  font-weight: bold;
-  cursor: pointer;
-  transform: rotate(2deg);
-  box-shadow: 3px 3px 0 #000000;
-  transition: all 0.2s ease;
-}
-
-.reorder-button:hover {
-  transform: rotate(0) scale(1.05);
-  box-shadow: 5px 5px 0 #000000;
-}
-
 /* Loyalty Categories */
 .loyalty-categories {
   display: flex;
@@ -578,7 +550,7 @@ onMounted(() => {
   border: 2px solid #334466;
   color: #BBBBBB;
   font-weight: bold;
-  font-size: 14px;
+  font-size: 16px;
   cursor: pointer;
   transition: all 0.2s ease;
   box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.5);
@@ -626,10 +598,6 @@ onMounted(() => {
   .rental-date, .rental-overview, .rental-total {
     margin-bottom: 15px;
     width: 100%;
-  }
-
-  .rental-status, .expand-icon {
-    margin-left: auto;
   }
 
   .rental-item-row {
@@ -706,7 +674,7 @@ onMounted(() => {
 }
 
 .status-label, .next-label {
-  font-size: 9px;
+  font-size: 12px;
   color: #777;
   margin-bottom: 3px;
 }
@@ -715,7 +683,6 @@ onMounted(() => {
   background-color: #33FF99;
   color: #000;
   padding: 3px 8px;
-  font-size: 12px;
   font-weight: bold;
   border: 1px solid #000;
   display: inline-block;
@@ -758,11 +725,11 @@ onMounted(() => {
   font-weight: bold;
   color: #666;
   white-space: nowrap;
-  font-size: 8px;
+  font-size: 14px;
 }
 
 .tier-points {
-  font-size: 9px;
+  font-size: 12px;
   color: #888;
 }
 
@@ -812,7 +779,7 @@ onMounted(() => {
   background-color: #fff;
   border: 1px solid #eee;
   padding: 4px 8px;
-  font-size: 10px;
+  font-size: 15px;
   display: flex;
   align-items: center;
   color: #555;

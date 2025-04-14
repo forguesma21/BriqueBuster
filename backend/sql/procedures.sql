@@ -27,7 +27,7 @@ END;//
 
 CREATE PROCEDURE ObtenirProfilUtilisateur(IN userID VARCHAR(36))
 BEGIN
-    SELECT u.nom, u.courriel, cf.nom as statut, f.points
+    SELECT u.prenom, u.nom, u.courriel, cf.nom as statut, f.points
     FROM utilisateurs u
     JOIN fidelite f ON f.user_id = u.id
     JOIN categorie_fidelite cf ON f.categorie_id = cf.id
