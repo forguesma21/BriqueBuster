@@ -24,11 +24,11 @@ try:
 
         requete_categorie = """
                INSERT INTO categorie_fidelite (id, nom, seuil_minimum) VALUES
-                (0, "Cassette Basique",  0),
-                (1, "VHS Classique",  100),
-                (2, "Édition Collector",  500),
-                (3, "LaserDisc Élite", 1000),
-                (4, "Master du Magnétoscope", 2500);
+                (1, "Cassette Basique",  0),
+                (2, "VHS Classique",  100),
+                (3, "Édition Collector",  500),
+                (4, "LaserDisc Élite", 1000),
+                (5, "Master du Magnétoscope", 2500);
                 """
 
         cursor.execute(requete_categorie)

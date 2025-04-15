@@ -17,7 +17,7 @@ def ajouter_utilisateur(user_id, prenom, nom, courriel, mot_de_passe):
         with conn.cursor() as cursor:
             cursor.callproc("AjouterUtilisateur", (user_id, prenom, nom, courriel, mot_de_passe))
             conn.commit()
-            return True
+            return {"success": True, "utilisateurID": user_id}
     except Exception as e:
         print("🛑 Erreur AjouterUtilisateur:", e)
         return False

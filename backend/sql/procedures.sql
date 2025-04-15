@@ -1,3 +1,5 @@
+USE brique_buster;
+
 -- UTILISATEURS
 DROP PROCEDURE IF EXISTS VerifierUtilisateurExistant;
 DROP PROCEDURE IF EXISTS AjouterUtilisateur;

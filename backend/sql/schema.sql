@@ -1,3 +1,5 @@
+USE brique_buster;
+
 DROP TABLE IF EXISTS reservations_items;
 DROP TABLE IF EXISTS panier_items;
 DROP TABLE IF EXISTS paniers;
