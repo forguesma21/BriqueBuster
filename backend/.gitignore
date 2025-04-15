@@ -32,3 +32,4 @@ requirements.txt~
 
 # Autres fichiers cachés
 .env.*
+.env
