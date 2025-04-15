@@ -40,7 +40,7 @@ import { useStore } from 'vuex'
 import { ajouterAuPanier } from '@/api/paniers'
 import ModalProduct from '@/components/ModalProduct.vue'
 
-defineProps<{
+const props = defineProps<{ 
   nom: string
   prix: number
   produitId: string
@@ -48,7 +48,7 @@ defineProps<{
   annee: number
   longueur: number
   categorie: string
-  description?: string
+  description?: string 
 }>()
 
 
@@ -59,12 +59,12 @@ const ouvert = ref(false)
 const ajoutPanier = async () => {
   try {
     console.log('User connecté :', store.state.userId)
-    console.log('Id produit', produitId)
+    console.log('Id produit', props.produitId)
 
-    await ajouterAuPanier(store.state.userId, produitId, 1)
+    await ajouterAuPanier(store.state.userId, props.produitId, 1)
     store.commit('incrementCartCount', store.state.cartCount)
 
-    toast.success(`${nom} a été ajouté au panier !`, {
+    toast.success(`${props.nom} a été ajouté au panier !`, {
       toastClassName: 'bg-lime-400 font-bold'
     })
   } catch (error: any) {
