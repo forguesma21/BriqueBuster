@@ -30,10 +30,26 @@ def obtenir_profil_utilisateur(user_id):
     try:
         with conn.cursor() as cursor:
             cursor.callproc("ObtenirProfilUtilisateur", (user_id,))
-            return cursor.fetchone()
+            row = cursor.fetchone()
+
+            if row:
+                return {
+                    "success": True,
+                    "profil": dict(row)
+                }
+            else:
+                return {
+                    "success": False,
+                    "message": "Utilisateur non trouvé."
+                }
+    except Exception as e:
+        print("🛑 Erreur SQL ObtenirProfilUtilisateur :", e)
+        return {
+            "success": False,
+            "message": str(e)
+        }
     finally:
         conn.close()
-
 
 def verifier_connexion(courriel):
     conn = get_connection()
