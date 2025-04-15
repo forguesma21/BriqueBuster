@@ -8,7 +8,6 @@
       <h3 class="text-2xl font-bold text-BbBlack tracking-tight">{{ nom }}</h3>
       <p class="text-xl text-gray-700 font-bold">${{ prix }}</p>
       <p class="text-md text-gray-500">En stock: {{ enStock }}</p>
-      <p>cls</p>
 
       <button
         @click="ajoutPanier"
@@ -27,7 +26,7 @@
     </div>
      <ModalProduct
       v-if="ouvert"
-      :film="{ nom, prix, enStock }"
+      :film="{ nom, prix, enStock, description, categorie, longueur }"
       :ouvert="ouvert"
       @fermer="ouvert = false"
     />

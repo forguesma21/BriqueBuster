@@ -15,6 +15,9 @@
       <h2 class="text-2xl font-bold mb-4 text-BbBlack">{{ film.nom }}</h2>
       <p><strong>Prix :</strong> {{ film.prix }} $</p>
       <p><strong>Stock :</strong> {{ film.enStock }}</p>
+      <p><strong>Longueur :</strong> {{ film.longueur }} mins</p>
+      <p><strong>Catégorie :</strong> {{ film.categorie }}</p>
+
       <p class="mt-4 text-sm text-gray-600">
         {{ film.description || 'Aucune description disponible.' }}
       </p>
@@ -29,6 +32,8 @@ defineProps<{
     prix: number
     enStock: number
     description: string
+    categorie: string
+    longueur: number
   }
   ouvert: boolean
 }>()

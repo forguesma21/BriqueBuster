@@ -28,9 +28,6 @@
     />
   </section>
 
-  <p v-if="produits">{{produits}}</p>
-
-
 </template>
 
 <script lang="ts">

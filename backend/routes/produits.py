@@ -1,13 +1,15 @@
 from flask import Blueprint, jsonify, request
-from utils.formatters import formatter_info_produit
-from database.queries.produits_queries import rechercher_produits_par_nom, obtenir_tous_les_produits
+from database.queries.produits_queries import rechercher_produits_par_nom, obtenir_tous_les_produits, obtenir_produit_par_id
 
 produits_bp = Blueprint('produits', __name__)
 
 @produits_bp.route('/<int:produitID>', methods=['GET'])
 def obtenir_produit(produitID):
-    produit = Produits.query.get_or_404(produitID)
-    return jsonify(formatter_info_produit(produit)), 200
+    produit = obtenir_produit_par_id(produitID)
+    if produit:
+        return jsonify(produit), 200
+    else:
+        return jsonify({"message": "Produit non trouvé"}), 404
 
 @produits_bp.route('/recherche', methods=['GET'])
 def recherche_par_nom():
