@@ -13,9 +13,7 @@
       Aucun produit trouvé.
     </p>
 
-    <p v-if="chargement" class="text-center text-gray-500 mt-4">
-      🔄 Recherche en cours...
-    </p>
+    <p v-if="chargement" class="text-center text-gray-500 mt-4">🔄 Recherche en cours...</p>
   </div>
 
   <section class="flex flex-wrap gap-6 justify-center mt-8">
@@ -30,8 +28,6 @@
       />
     </div>
   </section>
-
-
 </template>
 
 <script setup lang="ts">
@@ -88,5 +84,4 @@ const lancerRecherche = async () => {
   background-color: #fff;
   color: #111;
 }
-
 </style>

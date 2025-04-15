@@ -4,7 +4,11 @@
       <div class="flex flex-row items-center">
         <div class="flex flex-col items-center text-sm">
           <router-link to="/accueil">
-            <img src="/BriqueB_logo.svg" alt="Logo Brique Buster" class="w-20 h20 hover:bg-pink-200" />
+            <img
+              src="/BriqueB_logo.svg"
+              alt="Logo Brique Buster"
+              class="w-20 h20 hover:bg-pink-200"
+            />
           </router-link>
         </div>
       </div>
@@ -36,13 +40,22 @@
 
         <router-link to="/panier">
           <ButtonRetro class="flex items-center space-x-2 px-4 py-2 rounded">
-            <svg class="w-6 h-6 text-black-50" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M3 3h18M3 3l3 18h12L21 3M3 3l4 4M17 7l4 4M5 19h14"></path>
+            <svg
+              class="w-6 h-6 text-black-50"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M3 3h18M3 3l3 18h12L21 3M3 3l4 4M17 7l4 4M5 19h14"
+              ></path>
             </svg>
             <div class="border-l-2 h-6 mx-2"></div>
-              <span>{{ nombreItemsPanier }}</span>
+            <span>{{ nombreItemsPanier }}</span>
           </ButtonRetro>
         </router-link>
       </div>
@@ -50,9 +63,7 @@
 
     <!-- Mobile Menu -->
     <div class="md:hidden">
-      <ButtonRetro>
-        Toggle Menu
-      </ButtonRetro>
+      <ButtonRetro> Toggle Menu </ButtonRetro>
     </div>
   </nav>
 </template>
@@ -80,8 +91,7 @@ const chargerPanier = async () => {
   try {
     const produits = await obtenirPanier(store.state.userId)
     const count = produits.reduce((acc, p) => acc + p.quantite, 0)
-    store.commit("setCartCount", count)
-
+    store.commit('setCartCount', count)
   } catch (error) {
     console.error('Erreur panier:', error)
   }
@@ -115,6 +125,3 @@ watchEffect(() => {
   }
 })
 </script>
-
-<style scoped>
-</style>

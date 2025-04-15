@@ -1,61 +1,62 @@
 <template>
   <div v-if="user" class="neo-brutal-container">
-
     <div class="user-header">
       <div class="user-card">
         <div class="pixel-avatar"></div>
         <div class="user-info">
-          <h1 class="loyalty-mini-title">{{ user.prenom.toUpperCase() }} {{user.nom.toUpperCase()}}</h1>
+          <h1 class="loyalty-mini-title">
+            {{ user.prenom.toUpperCase() }} {{ user.nom.toUpperCase() }}
+          </h1>
           <p class="user-email">{{ user.courriel }}</p>
         </div>
       </div>
     </div>
 
-  <div class="loyalty-compact">
-    <div class="loyalty-header">
-      <h3 class="loyalty-mini-title">PROGRAMME FIDÉLITÉ</h3>
-      <div class="loyalty-points">{{ user.points }} PTS</div>
-    </div>
-
-    <div class="loyalty-status-info">
-      <div class="current-status">
-        <div class="status-label">STATUT ACTUEL</div>
-        <div class="status-badge">{{ user.statut }}</div>
+    <div class="loyalty-compact">
+      <div class="loyalty-header">
+        <h3 class="loyalty-mini-title">PROGRAMME FIDÉLITÉ</h3>
+        <div class="loyalty-points">{{ user.points }} PTS</div>
       </div>
 
-      <div class="next-status">
-        <div class="next-label">PROCHAIN PALIER</div>
-        <div class="next-target">{{ prochainPalierLabel }}</div>
-      </div>
-    </div>
+      <div class="loyalty-status-info">
+        <div class="current-status">
+          <div class="status-label">STATUT ACTUEL</div>
+          <div class="status-badge">{{ user.statut }}</div>
+        </div>
 
-    <div class="loyalty-tiers">
-      <div
-        v-for="(palier, index) in paliers"
-        :key="palier.id"
-        class="tier-chip"
-        :class="{
-          'active': user.statut === palier.nom,
-          'completed': isTierCompleted(palier),
-          'current': isCurrentTier(palier),
-          'future': isFutureTier(palier)
-        }"
-      >
-        <div class="tier-name">{{ palier.nom }}</div>
-        <div class="tier-points">{{ palier.seuil }}</div>
+        <div class="next-status">
+          <div class="next-label">PROCHAIN PALIER</div>
+          <div class="next-target">{{ prochainPalierLabel }}</div>
+        </div>
       </div>
-    </div>
 
-    <div class="current-benefits">
-      <div class="benefits-title">AVANTAGES ACTUELS</div>
-      <div class="benefits-list">
-        <div v-for="(benefit, idx) in getCurrentBenefits()" :key="idx" class="benefit-item">
-          <span class="benefit-emoji">{{ benefit.emoji }}</span>
-          <span class="benefit-text">{{ benefit.label }}</span>
+      <div class="loyalty-tiers">
+        <div
+          v-for="(palier, index) in paliers"
+          :key="palier.id"
+          class="tier-chip"
+          :class="{
+            active: user.statut === palier.nom,
+            completed: isTierCompleted(palier),
+            current: isCurrentTier(palier),
+            future: isFutureTier(palier)
+          }"
+        >
+          <div class="tier-name">{{ palier.nom }}</div>
+          <div class="tier-points">{{ palier.seuil }}</div>
+        </div>
+      </div>
+
+      <div class="current-benefits">
+        <div class="benefits-title">AVANTAGES ACTUELS</div>
+        <div class="benefits-list">
+          <div v-for="(benefit, idx) in getCurrentBenefits()" :key="idx" class="benefit-item">
+            <span class="benefit-emoji">{{ benefit.emoji }}</span>
+            <span class="benefit-text">{{ benefit.label }}</span>
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
     <!-- Historique de location -->
     <div class="loyalty-compact">
@@ -64,11 +65,7 @@
       </div>
 
       <div class="rental-list">
-        <div
-          v-for="(reservation, index) in reservations"
-          :key="reservation.id"
-          class="rental-item"
-        >
+        <div v-for="(reservation, index) in reservations" :key="reservation.id" class="rental-item">
           <div class="rental-header" @click="toggleRental(index)">
             <div class="rental-date">
               <div class="date-box">
@@ -121,19 +118,16 @@
       </div>
     </div>
 
-   <div class="loyalty-categories">
-  <div
-    v-for="palier in paliers"
-    :key="palier.id"
-    class="category-pill"
-    :class="{ active: palier.nom === user.statut }"
-  >
-    {{ palier.nom }}
-  </div>
-
-</div>
-
-
+    <div class="loyalty-categories">
+      <div
+        v-for="palier in paliers"
+        :key="palier.id"
+        class="category-pill"
+        :class="{ active: palier.nom === user.statut }"
+      >
+        {{ palier.nom }}
+      </div>
+    </div>
   </div>
 </template>
 
@@ -148,7 +142,6 @@ import { obtenirCategorieFidelite } from '@/api/fidelite.js'
 const store = useStore()
 const paliers = ref([])
 const router = useRouter()
-
 
 const user = ref({
   nom: '',
@@ -170,7 +163,7 @@ const chargerPaliers = async () => {
     const data = await obtenirCategorieFidelite()
     paliers.value = data.sort((a, b) => a.seuil - b.seuil)
   } catch (error) {
-    console.error("Erreur chargement paliers :", error)
+    console.error('Erreur chargement paliers :', error)
   }
 }
 
@@ -222,7 +215,7 @@ const toggleRental = (id: number) => {
 const chargerProfil = async () => {
   try {
     const profil = await obtenirProfilUtilisateur(store.state.userId)
-    console.log("PROFILE : ", profil)
+    console.log('PROFILE : ', profil)
 
     user.value = {
       nom: profil.nom,
@@ -232,54 +225,48 @@ const chargerProfil = async () => {
       points: profil.points
     }
 
-    console.log("USER", user.value)
-
+    console.log('USER', user.value)
   } catch (error) {
     console.error('Erreur chargement profil :', error)
   }
 }
 
 const chargerReservations = async () => {
-  try{
-     const data = await obtenirHistoriqueReservations(store.state.userId)
-    console.log("RESERVATIONS : ", data)
-    reservations.value = data  // ✅ mise à jour de la ref
-
-
-  }catch(error){
+  try {
+    const data = await obtenirHistoriqueReservations(store.state.userId)
+    console.log('RESERVATIONS : ', data)
+    reservations.value = data
+  } catch (error) {
     console.error('Erreur chargement des reservations :', error)
-
   }
 }
 
-const isTierCompleted = (palier) => {
-  const currentTierIndex = paliers.value.findIndex(p => p.nom === user.value.statut);
-  const palierIndex = paliers.value.findIndex(p => p.id === palier.id);
-  return palierIndex < currentTierIndex;
-};
+const isTierCompleted = palier => {
+  const currentTierIndex = paliers.value.findIndex(p => p.nom === user.value.statut)
+  const palierIndex = paliers.value.findIndex(p => p.id === palier.id)
+  return palierIndex < currentTierIndex
+}
 
-const isCurrentTier = (palier) => {
-  return palier.nom === user.value.statut;
-};
+const isCurrentTier = palier => {
+  return palier.nom === user.value.statut
+}
 
-const isFutureTier = (palier) => {
-  const currentTierIndex = paliers.value.findIndex(p => p.nom === user.value.statut);
-  const palierIndex = paliers.value.findIndex(p => p.id === palier.id);
-  return palierIndex > currentTierIndex;
-};
+const isFutureTier = palier => {
+  const currentTierIndex = paliers.value.findIndex(p => p.nom === user.value.statut)
+  const palierIndex = paliers.value.findIndex(p => p.id === palier.id)
+  return palierIndex > currentTierIndex
+}
 
 const getCurrentBenefits = () => {
-  return getBenefits(user.value.statut);
-};
+  return getBenefits(user.value.statut)
+}
 
 onMounted(() => {
   chargerProfil()
   chargerPaliers()
   chargerReservations()
-
 })
 </script>
-
 
 <style scoped>
 /* Base container */
@@ -289,8 +276,7 @@ onMounted(() => {
   padding: 25px;
   max-width: 1200px;
   margin: 0 auto;
-  background-image:
-    radial-gradient(circle at 10% 20%, rgba(255, 0, 255, 0.05) 0%, transparent 20%),
+  background-image: radial-gradient(circle at 10% 20%, rgba(255, 0, 255, 0.05) 0%, transparent 20%),
     radial-gradient(circle at 90% 80%, rgba(0, 255, 255, 0.05) 0%, transparent 20%);
 }
 
@@ -313,8 +299,8 @@ onMounted(() => {
 .pixel-avatar {
   width: 80px;
   height: 80px;
-  background: linear-gradient(135deg, #E53373, #00FFFF);
-  border: 3px solid #33FF99;
+  background: linear-gradient(135deg, #e53373, #00ffff);
+  border: 3px solid #33ff99;
   position: relative;
   image-rendering: pixelated;
   margin-right: 20px;
@@ -322,7 +308,7 @@ onMounted(() => {
 }
 
 .pixel-avatar:after {
-  content: "";
+  content: '';
   position: absolute;
   top: 20px;
   left: 20px;
@@ -335,13 +321,17 @@ onMounted(() => {
 .user-email {
   margin: 5px 0 0 0;
   font-size: 16px;
-  color: #BBBBBB;
+  color: #bbbbbb;
 }
 
 /* Loyalty VHS Section */
 @keyframes scanline {
-  0% { transform: translateX(-100%); }
-  100% { transform: translateX(100%); }
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
 }
 
 .benefit-item {
@@ -349,11 +339,11 @@ onMounted(() => {
   align-items: center;
   margin-bottom: 12px;
   font-size: 13px;
-  color: #CCCCCC;
+  color: #cccccc;
 }
 
 .active {
-  background-color: #33FF99;
+  background-color: #33ff99;
   color: #000000;
   border: 2px solid #000000;
 }
@@ -399,7 +389,7 @@ onMounted(() => {
 
 .date-box {
   background-color: var(--bb-pink);
-  color: #FFFFFF;
+  color: #ffffff;
   padding: 8px 12px;
   display: flex;
   flex-direction: column;
@@ -495,12 +485,24 @@ onMounted(() => {
   box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.5);
 }
 
-.item-thumb.action { background-color: #FF4500; }
-.item-thumb.horror { background-color: #800080; }
-.item-thumb.comedy { background-color: #FFD700; }
-.item-thumb.scifi { background-color: #4682B4; }
-.item-thumb.drama { background-color: #8B0000; }
-.item-thumb.classic { background-color: #006400; }
+.item-thumb.action {
+  background-color: #ff4500;
+}
+.item-thumb.horror {
+  background-color: #800080;
+}
+.item-thumb.comedy {
+  background-color: #ffd700;
+}
+.item-thumb.scifi {
+  background-color: #4682b4;
+}
+.item-thumb.drama {
+  background-color: #8b0000;
+}
+.item-thumb.classic {
+  background-color: #006400;
+}
 
 .item-info {
   flex-grow: 1;
@@ -517,7 +519,8 @@ onMounted(() => {
   margin-top: 3px;
 }
 
-.item-duration, .item-price {
+.item-duration,
+.item-price {
   width: 100px;
   text-align: right;
   color: var(--text-dark);
@@ -555,7 +558,7 @@ onMounted(() => {
   padding: 10px 20px;
   background-color: #1a1a2a;
   border: 2px solid #334466;
-  color: #BBBBBB;
+  color: #bbbbbb;
   font-weight: bold;
   font-size: 16px;
   cursor: pointer;
@@ -568,7 +571,7 @@ onMounted(() => {
 }
 
 .category-pill.active {
-  background-color: #33FF99;
+  background-color: #33ff99;
   color: #000000;
   border-color: #000000;
   transform: translateY(-5px);
@@ -577,8 +580,12 @@ onMounted(() => {
 
 /* Animation */
 @keyframes shine {
-  0% { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
 }
 
 /* Responsive adjustments */
@@ -602,7 +609,9 @@ onMounted(() => {
     flex-wrap: wrap;
   }
 
-  .rental-date, .rental-overview, .rental-total {
+  .rental-date,
+  .rental-overview,
+  .rental-total {
     margin-bottom: 15px;
     width: 100%;
   }
@@ -611,7 +620,8 @@ onMounted(() => {
     flex-wrap: wrap;
   }
 
-  .item-duration, .item-price {
+  .item-duration,
+  .item-price {
     width: 50%;
     text-align: left;
     margin-top: 10px;
@@ -676,18 +686,20 @@ onMounted(() => {
   margin-bottom: 15px;
 }
 
-.current-status, .next-status {
+.current-status,
+.next-status {
   text-align: center;
 }
 
-.status-label, .next-label {
+.status-label,
+.next-label {
   font-size: 12px;
   color: #777;
   margin-bottom: 3px;
 }
 
 .status-badge {
-  background-color: #33FF99;
+  background-color: #33ff99;
   color: #000;
   padding: 3px 8px;
   font-weight: bold;
@@ -708,7 +720,7 @@ onMounted(() => {
 }
 
 .loyalty-tiers:after {
-  content: "";
+  content: '';
   position: absolute;
   top: 50%;
   left: 0;
@@ -745,8 +757,9 @@ onMounted(() => {
   border-color: #99cc99;
 }
 
-.tier-chip.active, .tier-chip.current {
-  background-color: #33FF99;
+.tier-chip.active,
+.tier-chip.current {
+  background-color: #33ff99;
   border-color: #000;
   transform: scale(1.1);
   z-index: 2;
@@ -811,5 +824,4 @@ onMounted(() => {
     margin-bottom: 5px;
   }
 }
-
 </style>
