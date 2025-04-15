@@ -1,17 +1,22 @@
-from database.db import db
-from database.models import CategorieFidelite
+from database.db import get_connection
 
 def obtenir_categories_fidelite():
+    conn = get_connection()
     try:
-        categories = CategorieFidelite.query.order_by(CategorieFidelite.seuil_minimum).all()
-        return [
-            {
-                "id": cat.id,
-                "nom": cat.nom,
-                "seuil": cat.seuil_minimum
-            }
-            for cat in categories
-        ]
+        with conn.cursor() as cursor:
+            cursor.execute("SELECT id, nom, seuil_minimum FROM categorie_fidelite ORDER BY seuil_minimum;")
+            result = cursor.fetchall()
+
+            return [
+                {
+                    "id": row["id"],
+                    "nom": row["nom"],
+                    "seuil": row["seuil_minimum"]
+                }
+                for row in result
+            ]
     except Exception as e:
         print("🛑 Erreur chargement catégories fidélité :", e)
         return []
+    finally:
+        conn.close()

@@ -1,70 +1,45 @@
-from database.models import Utilisateurs
-from database.db import db
-from sqlalchemy import text
-
+from database.db import get_connection
 
 def verifier_utilisateur_existant(courriel: str):
+    conn = get_connection()
     try:
-        result = db.session.execute(
-            text("CALL VerifierUtilisateurExistant(:courriel)"),
-            {"courriel": courriel}
-        )
-        return result.fetchone() is not None
+        with conn.cursor() as cursor:
+            cursor.callproc("VerifierUtilisateurExistant", (courriel,))
+            result = cursor.fetchone()
+            return result["id"] if result else None
+    finally:
+        conn.close()
+
+
+def ajouter_utilisateur(user_id, prenom, nom, courriel, mot_de_passe):
+    conn = get_connection()
+    try:
+        with conn.cursor() as cursor:
+            cursor.callproc("AjouterUtilisateur", (user_id, prenom, nom, courriel, mot_de_passe))
+            conn.commit()
+            return True
     except Exception as e:
-        print("Erreur VerifierUtilisateurExistant:", e)
+        print("🛑 Erreur AjouterUtilisateur:", e)
         return False
+    finally:
+        conn.close()
 
 
-def ajouter_utilisateur(utilisateur):
+def obtenir_profil_utilisateur(user_id):
+    conn = get_connection()
     try:
-        db.session.execute(
-            text("CALL AjouterUtilisateur(:userID, :prenom, :nom, :courriel, :motDePasse)"),
-            utilisateur)
-        db.session.commit()
-        return {"success": True, "utilisateurID": utilisateur["userID"]}
-    except Exception as e:
-        db.session.rollback()
-        print("Erreur AjouterUtilisateur:", e)
-        return {"success": False, "message": str(e)}
+        with conn.cursor() as cursor:
+            cursor.callproc("ObtenirProfilUtilisateur", (user_id,))
+            return cursor.fetchone()
+    finally:
+        conn.close()
 
 
-def obtenir_profil_utilisateur(user_id: str):
+def verifier_connexion(courriel):
+    conn = get_connection()
     try:
-        result = db.session.execute(
-            text("CALL ObtenirProfilUtilisateur(:userID)"),
-            {"userID": user_id}
-        )
-
-        row = result.fetchone()
-        if row:
-            row=row._mapping
-            print("👤 Profil trouvé :", row)
-
-            return {
-                "success": True,
-                "nom": row["nom"],
-                "prenom": row["prenom"],
-                "courriel": row["courriel"],
-                "points": row["points"],
-                "statut": row["statut"]
-            }
-        else:
-            return {"success": False, "message": "Utilisateur non trouvé."}
-
-    except Exception as e:
-        print("🛑 Erreur SQL ObtenirProfilUtilisateur :", e)
-        return {"success": False, "message": str(e)}
-
-def verifier_connexion(courriel: str):
-    try:
-        result = db.session.execute(
-            text("CALL ConnexionUtilisateur(:courriel)"),
-            {"courriel": courriel}
-        )
-        row = result.fetchone()
-        if row:
-            return {"id": row.id, "mot_de_passe": row.mot_de_passe}
-        return None
-    except Exception as e:
-        print("Erreur ConnexionUtilisateur:", e)
-        return None
+        with conn.cursor() as cursor:
+            cursor.callproc("ConnexionUtilisateur", (courriel,))
+            return cursor.fetchone()
+    finally:
+        conn.close()

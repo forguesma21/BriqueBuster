@@ -1,6 +1,5 @@
 from flask import Blueprint, request, jsonify
 from werkzeug.security import generate_password_hash, check_password_hash
-from database.models import Utilisateurs
 from database.queries.utilisateurs_queries import verifier_utilisateur_existant, ajouter_utilisateur
 from database.queries.utilisateurs_queries import obtenir_profil_utilisateur, verifier_connexion
 import uuid

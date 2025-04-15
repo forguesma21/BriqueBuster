@@ -189,4 +189,9 @@ BEGIN
     SELECT * FROM Produits;
 END //
 
+CREATE PROCEDURE GetProduitByID(IN idProduit INT)
+BEGIN
+    SELECT * FROM produits WHERE id = idProduit;
+END //
+
 DELIMITER ;

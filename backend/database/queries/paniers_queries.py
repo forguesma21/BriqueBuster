@@ -1,25 +1,19 @@
-from database.db import db
-from sqlalchemy import text
-
+from database.db import get_connection
 
 def ajouter_produit_au_panier(user_id: str, produit_id: str, quantite: int = 1):
+    conn = get_connection()
     try:
-
-        db.session.execute(
-            text("CALL AjoutPanier(:userID, :produitID, :quantite)"),
-            {"userID": user_id, "produitID": produit_id, "quantite": quantite}
-        )
-
-        db.session.commit()
+        with conn.cursor() as cursor:
+            cursor.callproc("AjoutPanier", (user_id, produit_id, quantite))
+            conn.commit()
         return {
             "success": True,
             "message": "Produit ajouté au panier avec succès."
         }
 
     except Exception as e:
-        db.session.rollback()
+        conn.rollback()
         error_message = str(e)
-
         print("🛑 Erreur SQL AjoutPanier :", error_message)
 
         if "Le produit spécifié n'existe pas" in error_message:
@@ -35,55 +29,57 @@ def ajouter_produit_au_panier(user_id: str, produit_id: str, quantite: int = 1):
             "success": False,
             "message": message
         }
+    finally:
+        conn.close()
+
 
 def obtenir_panier_utilisateur(user_id: str):
+    conn = get_connection()
     try:
-        result = db.session.execute(
-            text("CALL ObtenirPanier(:userID)"),
-            {"userID": user_id}
-        )
+        with conn.cursor() as cursor:
+            cursor.callproc("ObtenirPanier", (user_id,))
+            rows = cursor.fetchall()
+            produits = [dict(row) for row in rows]
 
-        rows = result.fetchall()
-        produits = [dict(row._mapping) for row in rows]
+            # 🧼 Nettoyage des résultats restants (évite des erreurs avec certains SGBD)
+            try:
+                while cursor.nextset():
+                    pass
+            except Exception as e:
+                print("⚠️ nextset() ignoré :", str(e))
 
-        try:
-            while result.nextset():
-                pass
-        except Exception as e:
-            print("⚠️ nextset() ignoré :", str(e))
-
-        return {
-            "success": True,
-            "produits": produits
-        }
+            return {
+                "success": True,
+                "produits": produits
+            }
 
     except Exception as e:
         error_message = str(e)
         print("🛑 Erreur SQL ObtenirPanier :", error_message)
-
         return {
             "success": False,
             "message": "Erreur lors de la récupération du panier."
         }
+    finally:
+        conn.close()
 
 
 def retirer_produit_du_panier(user_id: str, produit_id: str):
+    conn = get_connection()
     try:
-        db.session.execute(
-            text("CALL RetirerDuPanier(:userID, :produitID)"),
-            {"userID": user_id, "produitID": produit_id}
-        )
-        db.session.commit()
-
+        with conn.cursor() as cursor:
+            cursor.callproc("RetirerDuPanier", (user_id, produit_id))
+            conn.commit()
         return {
             "success": True,
             "message": "Produit retiré du panier avec succès."
         }
-
     except Exception as e:
-        db.session.rollback()
+        conn.rollback()
         print("🛑 Erreur SQL RetirerDuPanier :", str(e))
         return {
             "success": False,
             "message": str(e)
         }
+    finally:
+        conn.close()

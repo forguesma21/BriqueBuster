@@ -1,74 +1,93 @@
-import click
+import os
 from flask import Flask
-from flask.cli import with_appcontext
 from flask_cors import CORS
 from dotenv import load_dotenv
-from database.db import db
-from flask_migrate import Migrate
-from database.models import Utilisateurs
 from routes.utilisateurs import utilisateurs_bp
 from routes.produits import produits_bp
 from routes.paniers import paniers_bp
 from routes.panier_items import panier_items_bp
 from routes.reservations import reservations_bp
 from routes.fidelite import fidelite_bp
-
-import os
+import pymysql
 
 load_dotenv()
 
 app = Flask(__name__)
-CORS(app, origin='http://localhost:5174')
-migrate = Migrate(app, db)
+CORS(app, origins='http://localhost:5174')
 
+# 📦 Chargement config
 app.config.from_object('config.Config')
 
-db.init_app(app)
-
-app.register_blueprint(utilisateurs_bp, url_prefix='/utilisateurs', name='utilisateurs_bp')
-app.register_blueprint(produits_bp, url_prefix='/produits', name='produits_bp')
-app.register_blueprint(paniers_bp, url_prefix='/paniers', name='paniers_bp')
-app.register_blueprint(panier_items_bp, url_prefix='/panier_items', name='panier_items_bp')
+# ✅ Chargement des routes
+app.register_blueprint(utilisateurs_bp, url_prefix='/utilisateurs')
+app.register_blueprint(produits_bp, url_prefix='/produits')
+app.register_blueprint(paniers_bp, url_prefix='/paniers')
+app.register_blueprint(panier_items_bp, url_prefix='/panier_items')
 app.register_blueprint(reservations_bp, url_prefix="/reservations")
 app.register_blueprint(fidelite_bp, url_prefix="/fidelite")
 
+# 🔨 Fonction d'init SQL
+import pymysql
+import os
 
-@click.command(name='start_db')
-@with_appcontext
-def start_db():
-    with app.app_context():
-        db.create_all()
-        print("Tables créées avec succès.")
+def init_db():
+    db_host = os.getenv("DB_HOST", "localhost")
+    db_user = os.getenv("DB_USER", "root")
+    db_password = os.getenv("DB_PASSWORD", "")
+    db_name = os.getenv("DB_NAME", "brique_buster")
 
-
-@click.command(name='reset_db')
-@with_appcontext
-def reset_db():
-    conn = db.engine.raw_connection()
-    cursor = conn.cursor()
+    # 🔹 Étape 1 : Connexion sans base pour créer la base si besoin
+    print("📦 Connexion au serveur MySQL...")
+    connection = pymysql.connect(
+        host=db_host,
+        user=db_user,
+        password=db_password,
+        autocommit=True
+    )
 
     try:
-        cursor.execute("SET FOREIGN_KEY_CHECKS = 0;")
-        db.drop_all()
-        cursor.execute("SET FOREIGN_KEY_CHECKS = 1;")
-        db.create_all()
-        conn.commit()
-        print("Base de données réinitialisée avec succès.")
-    except Exception as e:
-        conn.rollback()
-        print(f"Erreur lors de la réinitialisation de la base de données : {str(e)}")
+        with connection.cursor() as cursor:
+            cursor.execute(f"CREATE DATABASE IF NOT EXISTS {db_name};")
+            print(f"✅ Base de données `{db_name}` vérifiée/créée.")
     finally:
-        cursor.close()
-        conn.close()
+        connection.close()
 
+    # 🔹 Étape 2 : Connexion à la base pour créer les tables
+    connection = pymysql.connect(
+        host=db_host,
+        user=db_user,
+        password=db_password,
+        database=db_name,
+        autocommit=True
+    )
 
+    try:
+        with connection.cursor() as cursor:
+            cursor.execute("SHOW TABLES;")
+            tables = cursor.fetchall()
+            if len(tables) > 0:
+                print("✅ Tables déjà présentes. Pas besoin de recharger.")
+                return
+
+            with open("schema.sql", "r", encoding="utf-8") as f:
+                sql = f.read()
+                cursor.execute("SET FOREIGN_KEY_CHECKS=0;")
+                for statement in sql.split(";"):
+                    if statement.strip():
+                        cursor.execute(statement)
+                cursor.execute("SET FOREIGN_KEY_CHECKS=1;")
+            print("✅ Tables créées avec succès.")
+    except Exception as e:
+        print("🛑 Erreur lors de l'initialisation de la base :", e)
+    finally:
+        connection.close()
+
+# Route de test
 @app.route('/')
 def index():
     return "Bienvenue sur le serveur de Chez Brique Buster."
 
-
-app.cli.add_command(reset_db)
-app.cli.add_command(start_db)
-
+# Lance l'init et le serveur
 if __name__ == '__main__':
+    init_db()
     app.run(debug=True)

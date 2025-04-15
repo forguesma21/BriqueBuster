@@ -1,5 +1,4 @@
 from flask import Blueprint, jsonify, request
-from database.models import Produits
 from utils.formatters import formatter_info_produit
 from database.queries.produits_queries import rechercher_produits_par_nom, obtenir_tous_les_produits
 
@@ -35,3 +34,4 @@ def route_obtenir_tous_les_produits():
         return jsonify({
             "message": result["message"]
         }), 500
+
