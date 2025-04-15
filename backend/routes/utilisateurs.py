@@ -43,7 +43,12 @@ def inscription():
             "motDePasse": generate_password_hash(data["motDePasse"]),
         }
 
-        resultat = ajouter_utilisateur(utilisateur)
+        resultat = ajouter_utilisateur(utilisateur["userID"],
+                                       utilisateur["prenom"],
+                                       utilisateur["nom"],
+                                       utilisateur["courriel"],
+                                       utilisateur["motDePasse"]
+                                    )
 
         if resultat["success"]:
             return jsonify(resultat), 200
