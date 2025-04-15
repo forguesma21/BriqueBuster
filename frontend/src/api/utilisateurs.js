@@ -1,32 +1,43 @@
-import axios from 'axios';
-const API_URL = "http://localhost:5000/utilisateurs";
+import axios from 'axios'
+const API_URL = 'http://localhost:5000/utilisateurs'
 
 export async function inscriptionUtilisateur(utilisateur) {
-   try {
-        const response = await axios.post(`${API_URL}/inscription`, utilisateur, {
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            timeout: 5000
-        });
+  try {
+    const response = await axios.post(`${API_URL}/inscription`, utilisateur, {
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      timeout: 5000
+    })
 
-        return response.data;
-   }catch(error){
-       if (error.response) {
-            throw new Error(error.response.data.message || "Erreur lors de l'inscription.");
-   }}
+    return response.data
+  } catch (error) {
+    if (error.response) {
+      throw new Error(error.response.data.message || "Erreur lors de l'inscription.")
+    }
+  }
 }
 
 export async function connexionUtilisateur(utilisateur) {
-    try {
-        const response = await axios.post(`${API_URL}/connexion`, utilisateur, {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
-        return response.data;
-    }catch(error){
+  try {
+    const response = await axios.post(`${API_URL}/connexion`, utilisateur, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    return response.data
+  } catch (error) {
     if (error.response) {
-            throw new Error(error.response.data.message || "Erreur.");
+      throw new Error(error.response.data.message || 'Erreur.')
     }
-    }}
+  }
+}
+
+export async function obtenirProfilUtilisateur(userId) {
+  try {
+    const response = await axios.get(`${API_URL}/${userId}`)
+    return response.data.profil
+  } catch (error) {
+    throw new Error(error.response.data.message || 'Erreur.')
+  }
+}

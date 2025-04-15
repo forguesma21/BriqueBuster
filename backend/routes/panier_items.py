@@ -1,38 +1,55 @@
 from flask import Blueprint, request, jsonify
-import mysql.connector
-import os
-from dotenv import load_dotenv
-
-# Charger les variables d'environnement depuis .env
-load_dotenv()
+from database.queries.paniers_queries import ajouter_produit_au_panier, obtenir_panier_utilisateur
+from database.queries.paniers_queries import retirer_produit_du_panier
 
 panier_items_bp = Blueprint('panier_items', __name__)
 
+@panier_items_bp.route("/ajouter", methods=['POST', 'OPTIONS'])
+def ajouter_au_panier():
+    if request.method == 'OPTIONS':
+        return '', 200
 
-@panier_items_bp.route('/ajouter', methods=['POST'])
-def ajouter():
-    data = request.json
-    user_id = data['user_id']
-    produit_id = data['produit_id']
-    quantite = data['quantite']
+    data = request.get_json()
+    print("👉 Données reçues :", data)  # debug 1
 
-    try:
-        connection = mysql.connector.connect(
-            host=os.getenv("DB_HOST"),
-            user=os.getenv("DB_USER"),
-            password=os.getenv("DB_PASSWORD"),
-            database=os.getenv("DB_NAME")
-        )
+    result = ajouter_produit_au_panier(
+        data["user_id"],
+        data["produit_id"],
+        data.get("quantite", 1)
+    )
 
-        cursor = connection.cursor()
+    print("👉 Résultat SQL :", result)  # debug 2
 
-        cursor.callproc('AddToPanier', [user_id, produit_id, quantite])
+    if result["success"]:
+        return jsonify({"message": "Ajouté au panier"}), 200
+    else:
+        return jsonify({"message": result["message"]}), 400
 
-        connection.commit()
-        cursor.close()
-        connection.close()
 
-        return jsonify({"message": "Produit ajouté au panier avec succès."}), 200
+@panier_items_bp.route("/<user_id>", methods=["GET"])
+def afficher_panier(user_id):
+    result = obtenir_panier_utilisateur(user_id)
+    if result["success"]:
+        response = jsonify(result["produits"])
+        status_code = 200
+    else:
+        response = jsonify({"message": result["message"]})
+        status_code = 400
 
-    except mysql.connector.Error as e:
-        return jsonify({"error": str(e)}), 500
+    return response, status_code
+
+
+@panier_items_bp.route("/retirer", methods=["DELETE"])
+def retirer_du_panier():
+    data = request.get_json()
+    user_id = data.get("user_id")
+    produit_id = data.get("produit_id")
+
+    if not user_id or not produit_id:
+        return jsonify({"message": "Champs requis manquants."}), 400
+
+    result = retirer_produit_du_panier(user_id, produit_id)
+
+    if result["success"]:
+        return jsonify({"message": result["message"]}), 200
+    return jsonify({"message": result["message"]}), 400

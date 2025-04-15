@@ -23,21 +23,16 @@ try:
     if connection.is_connected():
         cursor = connection.cursor()
 
-        # seed des cat de fidelite
-        categories = [
-            (0, "Cassette Basique",  0),
-            (1, "VHS Classique",  100),
-            (2, "Édition Collector",  500),
-            (3, "LaserDisc Élite", 1000),
-            (4, "Master du Magnétoscope", 2500)
-        ]
-
         requete_categorie = """
-                INSERT INTO categorie_fidelite (id, nom, seuil_minimum)
-                VALUES (%s, %s, %s)
+               INSERT INTO categorie_fidelite (id, nom, seuil_minimum) VALUES
+                (1, "Cassette Basique",  0),
+                (2, "VHS Classique",  100),
+                (3, "Édition Collector",  500),
+                (4, "LaserDisc Élite", 1000),
+                (5, "Master du Magnétoscope", 2500);
                 """
 
-        cursor.executemany(requete_categorie, categories)
+        cursor.execute(requete_categorie)
         connection.commit()
         print(f"{cursor.rowcount} catégories de fidélité ont été insérées avec succès !")
 

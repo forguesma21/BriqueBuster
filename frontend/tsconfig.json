@@ -1,17 +1,17 @@
 {
   "extends": "@vue/tsconfig/tsconfig.web.json",
   "include": [
-      "src/**/*",
-      "vite.config.*",
-      ".eslintrc.js",
-      "tailwind.config.js",
-      "postcss.config.js"
+    "src/**/*",
+    "vite.config.*",
+    ".eslintrc.js",
+    "tailwind.config.js",
+    "postcss.config.js"
   ],
   "compilerOptions": {
-      "baseUrl": ".",
-      "paths": {
-          "@/*": ["src/*"]
-      },
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    },
     "jsx": "preserve",
     "resolveJsonModule": true,
     "esModuleInterop": true,
@@ -21,6 +21,5 @@
     "moduleResolution": "node",
     "allowJs": false
   },
-    "include": ["src"]
-
+  "include": ["src"]
 }

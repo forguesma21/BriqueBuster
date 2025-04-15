@@ -33,9 +33,5 @@ export default {
       default: 'md:px-3 md:py-2'
     }
   }
-};
+}
 </script>
-
-<style scoped>
-/* Custom styles (if any) */
-</style>
