@@ -26,4 +26,12 @@ def recherche_par_nom():
 @produits_bp.route('/', methods=['GET'])
 def route_obtenir_tous_les_produits():
     result = obtenir_tous_les_produits()
-    return jsonify(result), 200 if result["success"] else 500
+    if result["success"]:
+        return jsonify({
+            "produits": result["produits"],
+            "nombreProduit": result["nombreProduit"]
+        }), 200
+    else:
+        return jsonify({
+            "message": result["message"]
+        }), 500
