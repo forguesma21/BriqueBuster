@@ -139,6 +139,7 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 import { obtenirProfilUtilisateur } from '@/api/utilisateurs.js'
 import { obtenirHistoriqueReservations } from '@/api/reservations.js'
@@ -146,6 +147,8 @@ import { obtenirCategorieFidelite } from '@/api/fidelite.js'
 
 const store = useStore()
 const paliers = ref([])
+const router = useRouter()
+
 
 const user = ref({
   nom: '',
@@ -157,6 +160,10 @@ const user = ref({
 
 const reservations = ref([])
 const openRental = ref<null | number>(null)
+
+const redirigerApresConnexion = () => {
+  router.push('/')
+}
 
 const chargerPaliers = async () => {
   try {
