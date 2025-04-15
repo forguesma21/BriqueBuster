@@ -6,7 +6,8 @@ import Produit from '@/views/Produit.vue'
 import Panier from '@/views/Panier.vue'
 import Connexion from '@/views/Connexion.vue'
 import Inscription from '@/views/Inscription.vue'
-import Utilisateur from '@/views/Utilisateur.vue';
+import Utilisateur from '@/views/Utilisateur.vue'
+import Recherche from '@/views/Recherche.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -44,6 +45,11 @@ const routes: Array<RouteRecordRaw> = [
     name: 'Inscription',
     component: Inscription,
   },
+  {
+    path:'/recherche',
+    name:'Recherche',
+    component: Recherche,
+  }
 ]
 
 const router = createRouter({

@@ -8,60 +8,75 @@
       <h3 class="text-2xl font-bold text-BbBlack tracking-tight">{{ nom }}</h3>
       <p class="text-xl text-gray-700 font-bold">${{ prix }}</p>
       <p class="text-md text-gray-500">En stock: {{ enStock }}</p>
+      <p>cls</p>
 
       <button
         @click="ajoutPanier"
-        class="px-4 py-2 mt-3 bg-black text-white border-2 border-black hover:bg-white hover:text-black transition-all"
+        class="px-4 py-2 mt-3 bg-pink-600 text-white border-2 border-black hover:bg-pink-600 hover:text-white transition-all"
       >
         Ajouter au panier
       </button>
+
+      <button
+      @click="ouvert = true"
+      class="px-4 py-2 mt-2 border-2 border-black text-black bg-white hover:bg-black hover:text-white transition"
+    >
+      Voir détails
+    </button>
+
     </div>
+     <ModalProduct
+      v-if="ouvert"
+      :film="{ nom, prix, enStock }"
+      :ouvert="ouvert"
+      @fermer="ouvert = false"
+    />
   </div>
 </template>
 
-<script>
+<script setup lang="ts">
+import { ref } from 'vue'
 import { useToast } from 'vue-toastification'
 import { useStore } from 'vuex'
-import { defineComponent } from 'vue'
 import { ajouterAuPanier } from '@/api/paniers'
+import ModalProduct from '@/components/ModalProduct.vue'
 
-export default defineComponent({
-  name: 'CardProduct',
-  props: {
-    nom: String,
-    prix: Number,
-    enStock: Number,
-    produitId: String
-  },
-  setup(props) {
-    const toast = useToast()
-    const store = useStore()
+defineProps<{
+  nom: string
+  prix: number
+  produitId: string
+  enStock: number
+  annee: number
+  longueur: number
+  categorie: string
+  description?: string
+}>()
 
-    const ajoutPanier = async () => {
-      try {
-        console.log("User connecté :", store.state.userId)
-        console.log("Id produit", props.produitId)
 
-        await ajouterAuPanier(store.state.userId, props.produitId, 1)
-        store.commit("incrementCartCount", store.state.cartCount)
+const toast = useToast()
+const store = useStore()
+const ouvert = ref(false)
 
-        toast.success(`${props.nom} a été ajouté au panier !`, {
-          toastClassName: 'bg-trempanilloVert font-bold'
-        })
-      } catch (error) {
-        console.error(error)
-        toast.error(
-          error?.response?.data?.message || 'Erreur lors de l’ajout au panier.',
-          { toastClassName: 'bg-BbRed font-bold' }
-        )
-      }
-    }
+const ajoutPanier = async () => {
+  try {
+    console.log('User connecté :', store.state.userId)
+    console.log('Id produit', produitId)
 
-    return {
-      ajoutPanier
-    }
+    await ajouterAuPanier(store.state.userId, produitId, 1)
+    store.commit('incrementCartCount', store.state.cartCount)
+
+    toast.success(`${nom} a été ajouté au panier !`, {
+      toastClassName: 'bg-lime-400 font-bold'
+    })
+  } catch (error: any) {
+    console.error(error)
+    toast.error(
+      error?.response?.data?.message || "Erreur lors de l’ajout au panier.",
+      { toastClassName: 'bg-BbRed font-bold' }
+    )
   }
-})
+}
+
 </script>
 
 <style scoped>

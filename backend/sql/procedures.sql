@@ -3,6 +3,8 @@ DROP PROCEDURE IF EXISTS VerifierUtilisateurExistant;
 DROP PROCEDURE IF EXISTS AjouterUtilisateur;
 DROP PROCEDURE IF EXISTS ObtenirProfilUtilisateur;
 DROP PROCEDURE IF EXISTS ConnexionUtilisateur;
+DROP PROCEDURE IF EXISTS RechercherProduitsParNom;
+DROP PROCEDURE IF EXISTS GetAllProduits;
 
 DELIMITER //
 
@@ -172,5 +174,19 @@ BEGIN
     WHERE r.user_id = userID
     ORDER BY r.date_reservation DESC;
 END;//
+
+
+-- PRODUITS
+CREATE PROCEDURE RechercherProduitsParNom(IN recherche VARCHAR(255))
+BEGIN
+    SELECT *
+    FROM Produits
+    WHERE nom LIKE CONCAT('%', recherche, '%');
+END //
+
+CREATE PROCEDURE GetAllProduits()
+BEGIN
+    SELECT * FROM Produits;
+END //
 
 DELIMITER ;

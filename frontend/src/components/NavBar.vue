@@ -4,7 +4,7 @@
       <div class="flex flex-row items-center">
         <div class="flex flex-col items-center text-sm">
           <router-link to="/accueil">
-            <img src="/BriqueB_logo.svg" alt="Logo Brique Buster" class="w-20 h20 hover:color-trempanilloCyan" />
+            <img src="/BriqueB_logo.svg" alt="Logo Brique Buster" class="w-20 h20 hover:bg-pink-200" />
           </router-link>
         </div>
       </div>
@@ -30,7 +30,7 @@
       </div>
 
       <div class="flex items-center space-x-4">
-        <router-link to="/accueil">
+        <router-link to="/recherche">
           <ButtonRetro>Recherche</ButtonRetro>
         </router-link>
 

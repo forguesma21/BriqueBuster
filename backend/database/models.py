@@ -46,7 +46,7 @@ class Fidelite(db.Model):
     id = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
     user_id = db.Column(db.String(36), db.ForeignKey('utilisateurs.id'), nullable=False)
     points = db.Column(db.Integer, nullable=False, default=0)
-    categorie_id = db.Column(db.Integer, db.ForeignKey('categorie_fidelite.id'), nullable=True, default=0)
+    categorie_id = db.Column(db.Integer, db.ForeignKey('categorie_fidelite.id'), nullable=True, default=1)
 
 class CategorieFidelite(db.Model):
     __tablename__ = 'categorie_fidelite'

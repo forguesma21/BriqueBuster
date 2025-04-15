@@ -15,15 +15,21 @@
   </div>
   <section class="flex flex-wrap gap-6 justify-center mt-8">
     <CardProduct
-        v-if="produits"
       v-for="produit in produits"
-      :key="produit.produitID"
+      :key="produit.id"
       :nom="produit.nom"
       :prix="produit.prix"
-      :enStock="produit.enStock"
-      :produitId="produit.produitID"
+      :produit-id="produit.id"
+      :en-stock="produit.en_stock"
+      :annee="produit.annee"
+      :longueur="produit.longueur"
+      :categorie="produit.categorie"
+      :description="produit.description"
     />
   </section>
+
+  <p v-if="produits">{{produits}}</p>
+
 
 </template>
 
