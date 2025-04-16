@@ -1,10 +1,11 @@
-
 <template>
   <div
     v-if="ouvert"
     class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
   >
-    <div class="bg-white border-4 border-black shadow-[5px_5px_0_#E53373] max-w-lg w-full p-6 relative font-mono">
+    <div
+      class="bg-white border-4 border-black shadow-[5px_5px_0_#E53373] max-w-lg w-full p-6 relative font-mono"
+    >
       <button
         @click="$emit('fermer')"
         class="absolute top-2 right-2 px-2 py-1 border border-black bg-BbBlack text-white hover:bg-white hover:text-black transition"
@@ -48,10 +49,4 @@ defineEmits(['fermer'])
 .text-BbBlack {
   color: #111111;
 }
-</style>
-
-
-
-<style scoped>
-
 </style>

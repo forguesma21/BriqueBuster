@@ -29,4 +29,3 @@ export async function retirerProduitDuPanier(userId, produitId) {
     throw new Error(error.response?.data?.message || 'Erreur lors du retrait du produit')
   }
 }
-

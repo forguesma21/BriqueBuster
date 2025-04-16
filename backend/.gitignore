@@ -1,0 +1,34 @@
+# Environnement virtuel
+venv/
+.env
+
+# Fichiers Python inutiles
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.log
+
+# Fichiers temporaires / IDE
+.DS_Store
+.vscode/
+.idea/
+*.swp
+
+# Fichiers de test/rapport
+.coverage
+htmlcov/
+*.egg-info/
+dist/
+build/
+
+# Base de données locale
+*.sqlite3
+*.db
+
+# Fichiers générés
+schema.sql~
+requirements.txt~
+
+# Autres fichiers cachés
+.env.*

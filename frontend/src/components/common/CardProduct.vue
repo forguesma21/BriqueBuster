@@ -1,5 +1,7 @@
 <template>
-  <div class="relative w-full max-w-sm p-4 border-4 border-black bg-white shadow-[5px_5px_0px_0px_#E53373] hover:shadow-[7px_7px_0px_0px_#E53373] transition-all mb-6">
+  <div
+    class="relative w-full max-w-sm p-4 border-4 border-black bg-white shadow-[5px_5px_0px_0px_#E53373] hover:shadow-[7px_7px_0px_0px_#E53373] transition-all mb-6"
+  >
     <div class="w-full h-40 bg-gray-200 flex items-center justify-center border border-black mb-4">
       <span class="text-xl font-bold text-black">Image non disponible</span>
     </div>
@@ -17,14 +19,13 @@
       </button>
 
       <button
-      @click="ouvert = true"
-      class="px-4 py-2 mt-2 border-2 border-black text-black bg-white hover:bg-black hover:text-white transition"
-    >
-      Voir détails
-    </button>
-
+        @click="ouvert = true"
+        class="px-4 py-2 mt-2 border-2 border-black text-black bg-white hover:bg-black hover:text-white transition"
+      >
+        Voir détails
+      </button>
     </div>
-     <ModalProduct
+    <ModalProduct
       v-if="ouvert"
       :film="{ nom, prix, enStock, description, categorie, longueur }"
       :ouvert="ouvert"
@@ -40,7 +41,7 @@ import { useStore } from 'vuex'
 import { ajouterAuPanier } from '@/api/paniers'
 import ModalProduct from '@/components/ModalProduct.vue'
 
-const props = defineProps<{ 
+const props = defineProps<{
   nom: string
   prix: number
   produitId: string
@@ -48,9 +49,8 @@ const props = defineProps<{
   annee: number
   longueur: number
   categorie: string
-  description?: string 
+  description?: string
 }>()
-
 
 const toast = useToast()
 const store = useStore()
@@ -69,13 +69,11 @@ const ajoutPanier = async () => {
     })
   } catch (error: any) {
     console.error(error)
-    toast.error(
-      error?.response?.data?.message || "Erreur lors de l’ajout au panier.",
-      { toastClassName: 'bg-BbRed font-bold' }
-    )
+    toast.error(error?.response?.data?.message || 'Erreur lors de l’ajout au panier.', {
+      toastClassName: 'bg-BbRed font-bold'
+    })
   }
 }
-
 </script>
 
 <style scoped>
